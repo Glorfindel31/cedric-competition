@@ -1,12 +1,15 @@
 import type {Metadata} from 'next';
-import {Inter} from 'next/font/google';
-import './globals.css';
-import '@radix-ui/themes/styles.css';
-import {Theme} from '@radix-ui/themes';
-import {ThemeProvider} from './components/theme-provider';
-import NavBar from './components/NavBar';
+import {Inter as FontSans} from 'next/font/google';
+import './global.css';
+import {ThemeProvider} from '@/components/theme-provider';
+import NavBar from '@/components/NavBar';
 
-const inter = Inter({subsets: ['latin']});
+import {cn} from '@/lib/utils';
+
+export const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,17 +19,20 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased flex flex-col items-center w-full',
+          fontSans.variable,
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Theme appearance="light" accentColor="orange" grayColor="slate" radius="full">
-            <NavBar />
-            {children}
-          </Theme>
+          <NavBar />
+          {children}
         </ThemeProvider>
       </body>
     </html>

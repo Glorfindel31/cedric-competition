@@ -1,0 +1,72 @@
+[
+  {
+    "user_id": "01",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@doe.com",
+    "password": "123456",
+    "date_of_birth": "1989-12-14",
+    "events_list": {
+      "event_id": "01",
+      "event_name": "Event 1",
+      "prb_list": [
+        {
+          "prb_id": "01",
+          "prb_name": "Prb_01",
+          "assent_date": "2023-12-15T19:00:00.000Z",
+          "attemts": "3",
+          "points": "7"
+        },
+        {
+          "prb_id": "02",
+          "prb_name": "Prb_02",
+          "assent_date": "2023-12-15T19:00:00.000Z",
+          "attemts": "3",
+          "points": "7"
+        },
+        {
+          "prb_id": "03",
+          "prb_name": "Prb_03",
+          "assent_date": "2023-12-15T19:00:00.000Z",
+          "attemts": "3",
+          "points": "7"
+        }
+      ]
+    }
+  },
+  {
+    "user_id": "02",
+    "first_name": "Cedric",
+    "last_name": "Flo",
+    "email": "cedric@flo.com",
+    "password": "123456",
+    "date_of_birth": "1989-12-14",
+    "events_list": {
+      "event_id": "01",
+      "event_name": "Event 1",
+      "prb_list": [
+        {
+          "prb_id": "01",
+          "prb_name": "Prb_01",
+          "assent_date": "2023-12-15T19:00:00.000Z",
+          "attemts": "3",
+          "points": "7"
+        },
+        {
+          "prb_id": "02",
+          "prb_name": "Prb_02",
+          "assent_date": "2023-12-15T19:00:00.000Z",
+          "attemts": "3",
+          "points": "7"
+        },
+        {
+          "prb_id": "03",
+          "prb_name": "Prb_03",
+          "assent_date": "2023-12-15T19:00:00.000Z",
+          "attemts": "3",
+          "points": "7"
+        }
+      ]
+    }
+  }
+]

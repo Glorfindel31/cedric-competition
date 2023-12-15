@@ -1,23 +1,32 @@
-'use client';
-import {Button, Container, Flex} from '@radix-ui/themes';
 import Link from 'next/link';
-import ToggleBtn from './ToggleBtn';
+import ToggleDark from '@/components/ui/ToggleDark';
+import {Button} from './ui/button';
+import {Separator} from '@/components/ui/separator';
 
 export default function NavBar() {
   return (
-    <nav>
-      <Flex gap="3" align="center" className=" border-b py-4 mx-4">
-        <Link href="/login" passHref>
-          <Button variant="soft">Login</Button>
-        </Link>
-        <Link href="/register" passHref>
-          <Button variant="soft">Register</Button>
-        </Link>
-        <Link href="/dashboard" passHref>
-          <Button variant="soft">Dashboard</Button>
-        </Link>
-        <ToggleBtn />
-      </Flex>
+    <nav className="w-full sm:w-[640px]">
+      <ul className="flex flex-row-reverse gap-4 py-4">
+        <li>
+          <ToggleDark />
+        </li>
+        <li>
+          <Button variant="secondary" asChild>
+            <Link href="/">Admin</Link>
+          </Button>
+        </li>
+        <li>
+          <Button variant="secondary" asChild>
+            <Link href="/">Register</Link>
+          </Button>
+        </li>
+        <li>
+          <Button asChild>
+            <Link href="/">Login</Link>
+          </Button>
+        </li>
+      </ul>
+      <Separator />
     </nav>
   );
 }

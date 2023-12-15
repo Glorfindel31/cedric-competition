@@ -1,13 +1,14 @@
+import {Separator} from '@/components/ui/separator';
 import {NextPage} from 'next';
 
 interface Props {}
 
 const Page: NextPage<Props> = ({}) => {
   return (
-    <div>
-      <h1>Admin Page</h1>
-      <h2>locked to one email - my</h2>
-    </div>
+    <main className="w-full sm:w-[640px]">
+      <h1>Hello Admin</h1>
+      <Separator />
+    </main>
   );
 };
 
