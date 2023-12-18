@@ -12,7 +12,7 @@ export default function NavBar() {
         </li>
         <li>
           <Button variant="secondary" asChild>
-            <Link href="/">Admin</Link>
+            <Link href="/admin">Admin</Link>
           </Button>
         </li>
         <li>
