@@ -10,6 +10,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export default function AdminDialogCheck({holdedData}: {holdedData: any}) {
   return (
@@ -26,18 +35,26 @@ export default function AdminDialogCheck({holdedData}: {holdedData: any}) {
             Please check the information below before submitting.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <h3>Name: {holdedData?.eventName}</h3>
-          <h3>Angle: {holdedData?.angle}°</h3>
-          <h3>Problems:</h3>
-          <ul>
+        <Table>
+          <TableCaption>
+            Problems List for {holdedData?.eventName} | Please double check before
+            submitting
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Problems Names</TableHead>
+              <TableHead className="text-right">Grade</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {holdedData?.problems.map((problem: any, index: any) => (
-              <li key={index}>
-                {problem.name} - {problem.grade}
-              </li>
+              <TableRow key={index}>
+                <TableCell>{problem.name}</TableCell>
+                <TableCell className="text-right">V{problem.grade}</TableCell>
+              </TableRow>
             ))}
-          </ul>
-        </div>
+          </TableBody>
+        </Table>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>

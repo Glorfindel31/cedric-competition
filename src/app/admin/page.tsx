@@ -10,6 +10,7 @@ const Page: NextPage<Props> = ({}) => {
       <h1 className="text-4xl font-bold tracking-tight my-8">Welcome Back Admin!</h1>
       <Separator className="my-4" />
       <AdminForm />
+      <Separator className="my-4" />
     </main>
   );
 };
