@@ -25,7 +25,9 @@ const formSchema = z.object({
     from: z.date(),
     to: z.date(),
   }),
-  angle: z.number(),
+  angle: z.number().refine(value => !isNaN(value), {
+    message: 'Angle is required.',
+  }),
   problems: z.array(
     z.object({
       name: z
@@ -36,7 +38,9 @@ const formSchema = z.object({
         .max(200, {
           message: 'Must be at less than 200 characters.',
         }),
-      grade: z.number(),
+      grade: z.number().refine(value => !isNaN(value), {
+        message: 'Required to set a grade.',
+      }),
     }),
   ),
 });
@@ -57,7 +61,7 @@ export interface FormFieldProps {
 
 export default function AdminForm() {
   const [holdedData, setHoldedData] = useState<FormValues | null>(null);
-  const {register, ...rest} = useForm<FormValues>({
+  const {register, formState, ...rest} = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: {
@@ -84,7 +88,7 @@ export default function AdminForm() {
   const onSubmit = (data: z.infer<typeof formSchema>) => setHoldedData(data);
 
   return (
-    <Form {...{register, ...rest}}>
+    <Form {...{register, formState, ...rest}}>
       <form onSubmit={rest.handleSubmit(onSubmit)} className="space-y-8">
         <AdminEventName control={rest.control} name={'eventName'} />
         <AdminDateRange name={'dateRange'} />
@@ -97,7 +101,7 @@ export default function AdminForm() {
           remove={remove}
           register={register}
         />
-        <AdminDialogCheck holdedData={holdedData} />
+        {formState.isValid && <AdminDialogCheck holdedData={holdedData} />}
       </form>
     </Form>
   );
