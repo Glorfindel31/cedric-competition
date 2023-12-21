@@ -45,7 +45,7 @@ export default function AdminProblems({
                         size="icon"
                         onClick={(event: {preventDefault: () => void}) => {
                           event.preventDefault();
-                          append({name: '', grade: 0});
+                          append({name: '', grade: undefined});
                         }}
                       >
                         <Plus className="h-4 w-4" />

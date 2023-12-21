@@ -30,21 +30,18 @@ export default function AdminDialogCheck({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" type="submit" disabled={!formIsValid}>
+        <Button type="submit" disabled={!formIsValid}>
           Submit
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Please check the information below before submitting.
-          </DialogDescription>
+          <DialogTitle>Double check before submitting</DialogTitle>
         </DialogHeader>
         <Table>
           <TableCaption>
-            Problems List for {holdedData?.eventName} | Please double check before
-            submitting
+            Problems List for <strong>{holdedData?.eventName}</strong> | Please double
+            check before submitting
           </TableCaption>
           <TableHeader>
             <TableRow>
