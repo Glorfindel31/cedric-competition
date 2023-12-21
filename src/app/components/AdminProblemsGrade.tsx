@@ -16,16 +16,9 @@ export default function AdminProblemsGrade({control, name}: FormFieldProps) {
     <FormField
       name={name}
       control={control}
-      defaultValue={0}
       render={({field}) => (
         <FormItem>
-          <Select
-            {...field}
-            value={field.value.toString()}
-            onValueChange={value => {
-              field.onChange(Number(value));
-            }}
-          >
+          <Select onValueChange={value => field.onChange(Number(value))}>
             <FormControl>
               <SelectTrigger className="w-[80px]">
                 <SelectValue placeholder="Grade V Scale" />

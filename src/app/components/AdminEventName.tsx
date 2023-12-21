@@ -18,8 +18,8 @@ export default function AdminEventName({control, name}: FormFieldProps) {
           <FormLabel>Event Name</FormLabel>
           <FormControl>
             <Input
-              placeholder="Your event name"
               {...field}
+              placeholder="Your event name"
               value={String(field.value)}
               ref={null}
             />

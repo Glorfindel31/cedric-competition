@@ -20,11 +20,17 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-export default function AdminDialogCheck({holdedData}: {holdedData: any}) {
+export default function AdminDialogCheck({
+  holdedData,
+  formIsValid,
+}: {
+  holdedData: any;
+  formIsValid: boolean;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" type="submit">
+        <Button variant="outline" type="submit" disabled={!formIsValid}>
           Submit
         </Button>
       </DialogTrigger>
@@ -64,6 +70,7 @@ export default function AdminDialogCheck({holdedData}: {holdedData: any}) {
               onClick={event => {
                 console.log(holdedData);
               }}
+              disabled={!formIsValid}
             >
               Submit
             </Button>

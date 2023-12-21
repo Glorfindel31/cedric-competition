@@ -1,5 +1,11 @@
 'use client';
-import {FormControl, FormField, FormItem, FormLabel} from '@/components/ui/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
@@ -18,22 +24,23 @@ export default function AdminAngle({control, name}: FormFieldProps) {
       render={({field}) => (
         <FormItem>
           <FormLabel>Select angle</FormLabel>
-          <FormControl>
-            <div id="angle" className="mb-4">
-              <Select onValueChange={value => field.onChange(Number(value))}>
+          <div id="angle" className="mb-4">
+            <Select onValueChange={value => field.onChange(Number(value))}>
+              <FormControl>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select Angle" />
                 </SelectTrigger>
-                <SelectContent>
-                  {ANGLE_VALUES.map(angle => (
-                    <SelectItem key={angle} value={angle.toString()}>
-                      {angle}°
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </FormControl>
+              </FormControl>
+              <SelectContent>
+                {ANGLE_VALUES.map(angle => (
+                  <SelectItem key={angle} value={angle.toString()}>
+                    {angle}°
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <FormMessage />
         </FormItem>
       )}
     />

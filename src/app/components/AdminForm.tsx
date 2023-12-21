@@ -15,8 +15,8 @@ import AdminDialogCheck from '@components/AdminDialogCheck';
 const formSchema = z.object({
   eventName: z
     .string()
-    .min(2, {
-      message: 'Must be at least 2 characters.',
+    .min(5, {
+      message: 'Must be at least 5 characters.',
     })
     .max(100, {
       message: 'Must be at less than 100 characters.',
@@ -26,14 +26,14 @@ const formSchema = z.object({
     to: z.date(),
   }),
   angle: z.number().refine(value => !isNaN(value), {
-    message: 'Angle is required.',
+    message: 'Required to set a grade.',
   }),
   problems: z.array(
     z.object({
       name: z
         .string()
-        .min(2, {
-          message: 'Must be at least 2 characters.',
+        .min(5, {
+          message: 'Must be at least 5 characters.',
         })
         .max(200, {
           message: 'Must be at less than 200 characters.',
@@ -70,11 +70,9 @@ export default function AdminForm() {
         from: new Date(),
         to: new Date(),
       },
-      angle: 0,
       problems: [
         {
           name: '',
-          grade: 0,
         },
       ],
     },
@@ -101,7 +99,7 @@ export default function AdminForm() {
           remove={remove}
           register={register}
         />
-        {formState.isValid && <AdminDialogCheck holdedData={holdedData} />}
+        <AdminDialogCheck holdedData={holdedData} formIsValid={formState.isValid} />
       </form>
     </Form>
   );
