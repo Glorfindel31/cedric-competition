@@ -66,12 +66,14 @@ export default function AdminForm() {
     mode: 'onChange',
     defaultValues: {
       eventName: '',
+      angle: undefined,
       dateRange: {
         from: new Date(),
         to: new Date(),
       },
       problems: [
         {
+          grade: undefined,
           name: '',
         },
       ],
@@ -99,7 +101,11 @@ export default function AdminForm() {
           remove={remove}
           register={register}
         />
-        <AdminDialogCheck holdedData={holdedData} formIsValid={formState.isValid} />
+        <AdminDialogCheck
+          holdedData={holdedData}
+          formIsValid={formState.isValid}
+          resetForm={rest.reset}
+        />
       </form>
     </Form>
   );

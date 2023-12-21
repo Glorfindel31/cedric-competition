@@ -23,9 +23,11 @@ import {
 export default function AdminDialogCheck({
   holdedData,
   formIsValid,
+  resetForm,
 }: {
   holdedData: any;
   formIsValid: boolean;
+  resetForm: () => void;
 }) {
   return (
     <Dialog>
@@ -66,6 +68,7 @@ export default function AdminDialogCheck({
             <Button
               onClick={event => {
                 console.log(holdedData);
+                resetForm();
               }}
               disabled={!formIsValid}
             >
