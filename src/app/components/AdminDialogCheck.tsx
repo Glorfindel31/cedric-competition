@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,13 +20,15 @@ import {
 } from '@/components/ui/table';
 
 export default function AdminDialogCheck({
-  holdedData,
+  heldData,
   formIsValid,
   resetForm,
+  handlePost,
 }: {
-  holdedData: any;
+  heldData: any;
   formIsValid: boolean;
   resetForm: () => void;
+  handlePost: (data: any) => void;
 }) {
   return (
     <Dialog>
@@ -36,14 +37,14 @@ export default function AdminDialogCheck({
           Submit
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Double check before submitting</DialogTitle>
         </DialogHeader>
         <Table>
           <TableCaption>
-            Problems List for <strong>{holdedData?.eventName}</strong> | Please double
-            check before submitting
+            Problems List for <strong>{heldData?.eventName}</strong> | Please double check
+            before submitting
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -52,7 +53,7 @@ export default function AdminDialogCheck({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {holdedData?.problems.map((problem: any, index: any) => (
+            {heldData?.problems.map((problem: any, index: any) => (
               <TableRow key={index}>
                 <TableCell>{problem.name}</TableCell>
                 <TableCell className="text-right">V{problem.grade}</TableCell>
@@ -66,8 +67,9 @@ export default function AdminDialogCheck({
           </DialogClose>
           <DialogClose asChild>
             <Button
-              onClick={event => {
-                console.log(holdedData);
+              onClick={() => {
+                console.log(heldData);
+                handlePost(heldData);
                 resetForm();
               }}
               disabled={!formIsValid}

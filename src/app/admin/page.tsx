@@ -1,6 +1,7 @@
 import {NextPage} from 'next';
 import {Separator} from '@/components/ui/separator';
 import AdminForm from '@/components/AdminForm';
+import AdminProblemsList from '@components/AdminProblemsList';
 
 interface Props {}
 
@@ -11,6 +12,8 @@ const Page: NextPage<Props> = ({}) => {
       <Separator className="my-4" />
       <AdminForm />
       <Separator className="my-4" />
+      <AdminProblemsList />
+      <Separator className="my-12" />
     </main>
   );
 };

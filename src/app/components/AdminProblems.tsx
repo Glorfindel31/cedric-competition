@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
+import {Badge} from '@/components/ui/badge';
 
 export default function AdminProblems({
   control,
@@ -40,6 +41,9 @@ export default function AdminProblems({
                       key={fieldItem.id}
                       className="flex flex-row items-center gap-2 mb-2"
                     >
+                      <Badge variant="outline" className="w-10">
+                        #{index + 1}
+                      </Badge>
                       <Button
                         variant="outline"
                         size="icon"

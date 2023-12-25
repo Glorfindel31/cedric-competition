@@ -1,11 +1,12 @@
 'use client';
 import {zodResolver} from '@hookform/resolvers/zod';
+
 import * as z from 'zod';
 import {useForm, useFieldArray, Control} from 'react-hook-form';
 import {useState} from 'react';
 //ui
 import {Form} from '@/components/ui/form';
-//componants
+//components
 import AdminEventName from '@components/AdminEventName';
 import AdminDateRange from '@components/AdminDateRange';
 import AdminAngle from '@components/AdminAngle';
@@ -60,7 +61,7 @@ export interface FormFieldProps {
 }
 
 export default function AdminForm() {
-  const [holdedData, setHoldedData] = useState<FormValues | null>(null);
+  const [heldData, setHeldData] = useState<FormValues | null>(null);
   const {register, formState, ...rest} = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
@@ -85,7 +86,20 @@ export default function AdminForm() {
     control: rest.control,
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => setHoldedData(data);
+  const onSubmit = (data: z.infer<typeof formSchema>) => setHeldData(data);
+
+  const handlePost = async (data: any) => {
+    const response = await fetch('/api/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.error('Failed to submit', await response.text());
+    }
+  };
 
   return (
     <Form {...{register, formState, ...rest}}>
@@ -102,7 +116,8 @@ export default function AdminForm() {
           register={register}
         />
         <AdminDialogCheck
-          holdedData={holdedData}
+          heldData={heldData}
+          handlePost={handlePost}
           formIsValid={formState.isValid}
           resetForm={rest.reset}
         />

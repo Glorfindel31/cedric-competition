@@ -21,15 +21,9 @@
     "paths": {
       "@/*": ["./src/app/*"],
       "@components/*": ["./src/app/components/*"],
-      "@utils/*": ["./src/app/utils/*"]
+      "@lib/*": ["./src/app/lib/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/app/utils/firebaseConfig.js"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
