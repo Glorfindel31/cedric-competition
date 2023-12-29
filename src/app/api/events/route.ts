@@ -1,5 +1,5 @@
-import {MongoClient} from 'mongodb';
-import {NextResponse} from 'next/server';
+import {MongoClient, ObjectId} from 'mongodb';
+import {NextResponse, NextRequest} from 'next/server';
 
 async function POST(request: any) {
   try {
@@ -43,4 +43,29 @@ async function GET() {
   }
 }
 
-export {POST, GET};
+async function DELETE(request: any) {
+  const searchParams = request.nextUrl.searchParams;
+  const id = searchParams.get('id');
+
+  try {
+    if (!process.env.MONGODB_URI) {
+      return new Response(JSON.stringify({message: 'MONGODB_URI not defined'}), {
+        status: 500,
+      });
+    } else {
+      const client = await MongoClient.connect(process.env.MONGODB_URI);
+      const db = client.db('competition');
+      const collection = db.collection('events_list');
+      const result = await collection.deleteOne({
+        _id: new ObjectId(id),
+      });
+      client.close();
+
+      return NextResponse.json(result, {status: 200});
+    }
+  } catch (error) {
+    return NextResponse.json({error: error}, {status: 500});
+  }
+}
+
+export {POST, GET, DELETE};

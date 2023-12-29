@@ -12,18 +12,41 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import AdminRemoveUpdateDialog from './AdminRemoveUpdateDialog';
+
+const MAX_RETRIES = 5;
 
 const getList = async () => {
-  const response = await fetch('http://localhost:3000/api/events', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Something went wrong!');
+  let retries = 0;
+  let response;
+
+  while (retries < MAX_RETRIES) {
+    try {
+      response = await fetch('http://localhost:3000/api/events', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response && !response.ok) {
+        throw new Error('Something went wrong!');
+      }
+
+      // If the request was successful, break the loop
+      break;
+    } catch (error) {
+      // If the request failed, increment the retry counter
+      retries++;
+      console.error(`Attempt ${retries} failed. Retrying...`);
+    }
   }
-  return response.json();
+
+  if (retries === MAX_RETRIES) {
+    throw new Error('Failed to fetch data after multiple attempts');
+  }
+
+  return response?.json();
 };
 
 const AdminProblemsList = async () => {
@@ -47,6 +70,7 @@ const AdminProblemsList = async () => {
             })}
           </AccordionTrigger>
           <AccordionContent>
+            <AdminRemoveUpdateDialog eventId={event._id} />
             <Table>
               <TableHeader>
                 <TableRow>
@@ -71,52 +95,3 @@ const AdminProblemsList = async () => {
 };
 
 export default AdminProblemsList;
-
-const dataExample = [
-  {
-    _id: '6585bc8c341fcd75b534c85a',
-    eventName: 'my first event test',
-    dateRange: {from: '2023-12-22T16:39:21.329Z', to: '2023-12-22T17:00:00.000Z'},
-    angle: 40,
-    problems: [
-      {name: 'problem 01', grade: 0},
-      {name: 'problem 02', grade: 1},
-      {name: 'problem 03', grade: 2},
-      {name: 'problem 04', grade: 3},
-      {name: 'problem 05', grade: 4},
-    ],
-  },
-  {
-    _id: '6585bd2b341fcd75b534c85b',
-    eventName: 'my second event',
-    dateRange: {from: '2023-12-22T17:00:00.000Z', to: '2023-12-23T17:00:00.000Z'},
-    angle: 35,
-    problems: [
-      {name: "problem 01 '?> &&& ### ee😇", grade: 7},
-      {name: 'probke', grade: 1},
-      {name: 'jehjbfhjb', grade: 5},
-      {name: 'jknhrfbherb', grade: 6},
-    ],
-  },
-  {
-    _id: '6585c1bb341fcd75b534c85c',
-    eventName: 'test one the lost',
-    dateRange: {from: '2023-12-22T16:57:53.810Z', to: '2023-12-22T17:00:00.000Z'},
-    angle: 35,
-    problems: [
-      {name: 'bhnhjnhbjh', grade: 0},
-      {name: 'jjhbsdhjfbsjhdfbhj', grade: 1},
-      {name: 'kjfdvhnvfhdhf', grade: 2},
-      {name: 'jjfhbhsdjbbsdhjfshbjh', grade: 3},
-      {name: 'sfhbnysufbhnsbhn', grade: 4},
-      {name: 'hnbghnihbhnhnjhbnj', grade: 5},
-      {name: 'nuwiefwuiehfuwi', grade: 6},
-      {name: 'ewqfwqefqwef', grade: 7},
-      {name: 'qefqwefqwefwqefwq', grade: 8},
-      {name: 'eqqwerwqerwqe', grade: 9},
-      {name: 'eqwrfavfsdvf', grade: 10},
-      {name: 'adsagfweafafewr', grade: 11},
-      {name: 'addafsfasdfrg', grade: 12},
-    ],
-  },
-];

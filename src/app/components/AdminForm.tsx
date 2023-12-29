@@ -3,7 +3,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 
 import * as z from 'zod';
 import {useForm, useFieldArray, Control} from 'react-hook-form';
-import {useState} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 //ui
 import {Form} from '@/components/ui/form';
 //components
@@ -14,6 +14,7 @@ import AdminProblems from '@components/AdminProblems';
 import AdminDialogCheck from '@components/AdminDialogCheck';
 
 const formSchema = z.object({
+  _id: z.string().optional(),
   eventName: z
     .string()
     .min(5, {
@@ -46,7 +47,7 @@ const formSchema = z.object({
   ),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof formSchema> & {_id?: string};
 
 export interface AdminProblemsProps extends FormFieldProps {
   append: (value: any) => void; //
@@ -59,27 +60,36 @@ export interface FormFieldProps {
   control?: Control<FormValues>;
   name: any;
 }
+export interface AdminFormProps {
+  initialValues?: FormValues;
+}
 
-export default function AdminForm() {
-  const [heldData, setHeldData] = useState<FormValues | null>(null);
-  const {register, formState, ...rest} = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    mode: 'onChange',
-    defaultValues: {
+export default function AdminForm({initialValues}: AdminFormProps) {
+  const defaultValues = useMemo(
+    () => ({
       eventName: '',
       angle: undefined,
       dateRange: {
         from: new Date(),
         to: new Date(),
       },
-      problems: [
-        {
-          grade: undefined,
-          name: '',
-        },
-      ],
-    },
+      problems: initialValues?.problems.length
+        ? initialValues.problems
+        : [{grade: undefined, name: ''}],
+    }),
+    [initialValues],
+  );
+
+  const [heldData, setHeldData] = useState<FormValues | null>(null);
+  const {register, formState, reset, ...rest} = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    mode: 'onChange',
+    defaultValues: initialValues || defaultValues,
   });
+
+  useEffect(() => {
+    reset(initialValues || defaultValues);
+  }, [reset, initialValues, defaultValues]);
 
   const {fields, append, remove} = useFieldArray({
     name: 'problems',
@@ -102,7 +112,7 @@ export default function AdminForm() {
   };
 
   return (
-    <Form {...{register, formState, ...rest}}>
+    <Form {...{register, formState, reset, ...rest}}>
       <form onSubmit={rest.handleSubmit(onSubmit)} className="space-y-8">
         <AdminEventName control={rest.control} name={'eventName'} />
         <AdminDateRange name={'dateRange'} />
@@ -119,7 +129,7 @@ export default function AdminForm() {
           heldData={heldData}
           handlePost={handlePost}
           formIsValid={formState.isValid}
-          resetForm={rest.reset}
+          resetForm={reset}
         />
       </form>
     </Form>
