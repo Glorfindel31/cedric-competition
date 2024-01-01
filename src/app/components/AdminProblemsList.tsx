@@ -27,6 +27,7 @@ const getList = async () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'no-cache',
       });
 
       if (response && !response.ok) {

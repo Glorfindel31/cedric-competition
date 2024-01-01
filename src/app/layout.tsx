@@ -1,8 +1,9 @@
+import './global.css';
 import type {Metadata} from 'next';
 import {Inter as FontSans} from 'next/font/google';
-import './global.css';
 import {ThemeProvider} from '@/components/theme-provider';
 import NavBar from '@/components/NavBar';
+import {Toaster} from './components/ui/toaster';
 
 import {cn} from '@/lib/utils';
 
@@ -34,6 +35,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <NavBar />
           {children}
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 'use client';
 import {Button} from '@/components/ui/button';
+import {useToast} from '@/components/ui/use-toast';
 import {
   Dialog,
   DialogClose,
@@ -19,17 +20,36 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-export default function AdminDialogCheck({
+type AdminDialogCheckProps = {
+  heldData: any;
+  formIsValid: boolean;
+  initialValues: any;
+  resetForm: () => void;
+  handlePost: (data: any) => void;
+  handleUpdate: (data: any) => void;
+};
+
+const AdminDialogCheck: React.FC<AdminDialogCheckProps> = ({
   heldData,
   formIsValid,
   resetForm,
   handlePost,
-}: {
-  heldData: any;
-  formIsValid: boolean;
-  resetForm: () => void;
-  handlePost: (data: any) => void;
-}) {
+  initialValues,
+  handleUpdate,
+}) => {
+  const {toast} = useToast();
+  const getNewDate = () => {
+    let date = new Date();
+    let day = ('0' + date.getDate()).slice(-2);
+    let month = ('0' + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = ('0' + date.getHours()).slice(-2);
+    let minutes = ('0' + date.getMinutes()).slice(-2);
+    let seconds = ('0' + date.getSeconds()).slice(-2);
+
+    let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return formattedDate;
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -66,19 +86,43 @@ export default function AdminDialogCheck({
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button
-              onClick={() => {
-                console.log(heldData);
-                handlePost(heldData);
-                resetForm();
-              }}
-              disabled={!formIsValid}
-            >
-              Submit
-            </Button>
+            {initialValues ? (
+              <Button
+                onClick={() => {
+                  handleUpdate(heldData);
+                  toast({
+                    title: 'Updated Successfully',
+                    description: `${
+                      heldData.eventName
+                    } has been updated the ${getNewDate()}`,
+                  });
+                }}
+                disabled={!formIsValid}
+              >
+                Submit
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  handlePost(heldData);
+                  toast({
+                    title: 'Submit success full',
+                    description: `${
+                      heldData.eventName
+                    } has been updated the ${getNewDate()}`,
+                  });
+                  resetForm();
+                }}
+                disabled={!formIsValid}
+              >
+                Submit P
+              </Button>
+            )}
           </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default AdminDialogCheck;

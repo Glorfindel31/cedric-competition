@@ -11,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import {Button, buttonVariants} from '@/components/ui/button';
+import {useToast} from '@/components/ui/use-toast';
 import Link from 'next/link';
 
 export default function AdminRemoveUpdateDialog(eventId: any) {
@@ -23,8 +24,22 @@ export default function AdminRemoveUpdateDialog(eventId: any) {
     });
     if (!response.ok) {
       throw new Error('Something went wrong!');
+    } else {
+      window.location.reload();
     }
-    window.location.reload();
+  };
+  const {toast} = useToast();
+  const getNewDate = () => {
+    let date = new Date();
+    let day = ('0' + date.getDate()).slice(-2);
+    let month = ('0' + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    let hours = ('0' + date.getHours()).slice(-2);
+    let minutes = ('0' + date.getMinutes()).slice(-2);
+    let seconds = ('0' + date.getSeconds()).slice(-2);
+
+    let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return formattedDate;
   };
 
   return (
@@ -45,7 +60,17 @@ export default function AdminRemoveUpdateDialog(eventId: any) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleRemove}>Remove</AlertDialogAction>
+            <AlertDialogAction
+              onClick={() => {
+                handleRemove();
+                toast({
+                  title: 'Event Removed Successfully',
+                  description: `${eventId.eventName} has been remove the ${getNewDate()}`,
+                });
+              }}
+            >
+              Remove
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

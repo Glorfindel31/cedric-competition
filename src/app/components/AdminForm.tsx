@@ -1,6 +1,5 @@
 'use client';
 import {zodResolver} from '@hookform/resolvers/zod';
-
 import * as z from 'zod';
 import {useForm, useFieldArray, Control} from 'react-hook-form';
 import {useState, useEffect, useMemo} from 'react';
@@ -108,6 +107,24 @@ export default function AdminForm({initialValues}: AdminFormProps) {
     });
     if (!response.ok) {
       console.error('Failed to submit', await response.text());
+    } else {
+      window.location.reload();
+    }
+  };
+
+  const handleUpdate = async (data: any) => {
+    const response = await fetch('/api/events', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.error('Failed to submit', await response.text());
+    } else {
+      // return to admin page
+      window.location.href = '/admin';
     }
   };
 
@@ -126,8 +143,10 @@ export default function AdminForm({initialValues}: AdminFormProps) {
           register={register}
         />
         <AdminDialogCheck
+          initialValues={initialValues}
           heldData={heldData}
           handlePost={handlePost}
+          handleUpdate={handleUpdate}
           formIsValid={formState.isValid}
           resetForm={reset}
         />
