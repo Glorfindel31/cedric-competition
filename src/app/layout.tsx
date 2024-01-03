@@ -1,15 +1,16 @@
 import './global.css';
 import type {Metadata} from 'next';
-import {Inter as FontSans} from 'next/font/google';
+import {Lato} from 'next/font/google';
 import {ThemeProvider} from '@/components/theme-provider';
 import NavBar from '@/components/NavBar';
 import {Toaster} from './components/ui/toaster';
 
 import {cn} from '@/lib/utils';
 
-export const fontSans = FontSans({
+const lato = Lato({
   subsets: ['latin'],
   variable: '--font-sans',
+  weight: '400',
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased flex flex-col items-center w-full',
-          fontSans.variable,
+          lato.variable,
         )}
       >
         <ThemeProvider

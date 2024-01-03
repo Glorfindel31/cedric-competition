@@ -17,12 +17,12 @@ export default function NavBar() {
         </li>
         <li>
           <Button variant="secondary" asChild>
-            <Link href="/">Register</Link>
+            <Link href="/register">Register</Link>
           </Button>
         </li>
         <li>
           <Button asChild>
-            <Link href="/">Login</Link>
+            <Link href="/login">Login</Link>
           </Button>
         </li>
       </ul>
