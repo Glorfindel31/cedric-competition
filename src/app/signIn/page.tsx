@@ -1,16 +1,13 @@
 'use client';
-import {NextPage} from 'next';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {zodResolver} from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+import {signIn} from 'next-auth/react';
+
 import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+
 import {Button, buttonVariants} from '@/components/ui/button';
+
 import {
   Form,
   FormControl,
@@ -20,9 +17,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+
 import {Input} from '@/components/ui/input';
 
-import * as z from 'zod';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+
 import Link from 'next/link';
 
 const formSchema = z.object({
@@ -30,9 +36,7 @@ const formSchema = z.object({
   password: z.string().min(2).max(50),
 });
 
-interface Props {}
-
-const Page: NextPage<Props> = ({}) => {
+const Page = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,9 +45,14 @@ const Page: NextPage<Props> = ({}) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await signIn('credentials', {
+      username: values.username.toString(),
+      password: values.password.toString(),
+      redirect: true,
+      callbackUrl: '/admin',
+    });
     form.reset();
-    console.log(values);
   }
 
   return (
