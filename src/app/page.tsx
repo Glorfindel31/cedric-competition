@@ -29,7 +29,9 @@ export default function Home() {
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight my-4">
         To start, register or sign in to your account.
       </h3>
-      <Image src={kilter} alt="Kilterboard image" placeholder="blur" />
+      <div className="rounded overflow-hidden border">
+        <Image src={kilter} alt="Kilterboard image" placeholder="blur" />
+      </div>
     </main>
   );
 }
