@@ -13,45 +13,11 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import AdminRemoveUpdateDialog from './AdminRemoveUpdateDialog';
-
-const MAX_RETRIES = 5;
-
-const getList = async () => {
-  let retries = 0;
-  let response;
-
-  while (retries < MAX_RETRIES) {
-    try {
-      response = await fetch('http://localhost:3000/api/events', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'no-cache',
-      });
-
-      if (response && !response.ok) {
-        throw new Error('Something went wrong!');
-      }
-
-      // If the request was successful, break the loop
-      break;
-    } catch (error) {
-      // If the request failed, increment the retry counter
-      retries++;
-      console.error(`Attempt ${retries} failed. Retrying...`);
-    }
-  }
-
-  if (retries === MAX_RETRIES) {
-    throw new Error('Failed to fetch data after multiple attempts');
-  }
-
-  return response?.json();
-};
+import {PrismaClient} from '@prisma/client';
+const prisma = new PrismaClient();
 
 const AdminProblemsList = async () => {
-  const data: any[] = await getList();
+  const data = await prisma.events_list.findMany();
   return (
     <Accordion type="single" collapsible>
       {data.map((event: any, index: number) => (
@@ -71,7 +37,7 @@ const AdminProblemsList = async () => {
             })}
           </AccordionTrigger>
           <AccordionContent>
-            <AdminRemoveUpdateDialog eventId={event._id} />
+            <AdminRemoveUpdateDialog eventId={event.id} />
             <Table>
               <TableHeader>
                 <TableRow>

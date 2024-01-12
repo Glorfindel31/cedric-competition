@@ -51,7 +51,8 @@ const Page = () => {
       password: values.password.toString(),
       redirect: true,
       callbackUrl: '/admin',
-    });
+    },
+    );
     form.reset();
   }
 

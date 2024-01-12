@@ -13,7 +13,6 @@ const Page: NextPage<Props> = ({}) => {
       <AdminForm />
       <Separator className="my-4" />
       <AdminProblemsList />
-      <Separator className="my-12" />
     </main>
   );
 };

@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type EventsListDateRange {
+  from String
+  to   String
+}
+
+type EventsListProblems {
+  grade Int
+  name  String
+}
+
+model events_list {
+  id        String               @id @default(auto()) @map("_id") @db.ObjectId
+  angle     Int
+  dateRange EventsListDateRange
+  eventName String
+  problems  EventsListProblems[]
+}
+
+model users_list {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String
+  password String
+  role     String
+  user_id  String
+}

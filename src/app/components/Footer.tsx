@@ -6,7 +6,7 @@ import logo from '/public/Vietclimb - Logo 2022.png';
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-center w-full sm:w-[600px] py-12 mt-auto">
+    <footer className="flex flex-col items-center justify-center w-full sm:w-[600px] my-4">
       <Separator className="my-4" />
       <div className="flex flex-row gap-4 items-center">
         <div className="flex items-center bg-white rounded-full p-2">
