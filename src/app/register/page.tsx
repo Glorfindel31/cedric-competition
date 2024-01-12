@@ -77,31 +77,43 @@ const Page: NextPage<Props> = ({}) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await fetch('/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
+    try {
+      const response = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Failed to register', errorData);
-      // Display toast with error message
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Failed to register', errorData);
+        toast({
+          title: 'Failed to register',
+          description: errorData.error,
+        });
+      } else {
+        const successData = await response.json();
+        console.log('Registration successful', successData);
+        toast({
+          title: 'Registered Successfully',
+          description:
+            'Your account has been successfully registered. ' +
+            'Registered at: ' +
+            getNewDate(),
+        });
+        form.reset();
+        setTimeout(() => {
+          window.location.href = '/signIn';
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Error during registration', error);
       toast({
-        title: 'Failed to register',
-        description: errorData.error,
+        title: 'Error during registration',
+        description: 'An error occurred while trying to register. Please try again.',
       });
-    } else {
-      const successData = await response.json();
-      console.log('Registration successful', successData);
-      // Display toast with success message
-      toast({
-        title: 'Registered Successfully',
-        description: 'Your account has been successfully registered.',
-      });
-      form.reset();
     }
   }
 
