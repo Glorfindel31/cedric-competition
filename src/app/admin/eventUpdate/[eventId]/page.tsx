@@ -1,5 +1,6 @@
 import {Separator} from '@/components/ui/separator';
 import AdminForm from '@/components/AdminForm';
+import {PrismaClient} from '@prisma/client';
 
 async function getEvent(eventId: string) {
   const response = await fetch(`http://localhost:3000/api/events?eventId=${eventId}`, {
@@ -22,8 +23,17 @@ async function getEvent(eventId: string) {
   return data;
 }
 
+const prisma = new PrismaClient();
+
 const Page = async ({params}: {params: {eventId: string}}) => {
-  const data = await getEvent(params.eventId);
+  const data = await prisma.events_list.findUnique({
+    where: {
+      id: params.eventId,
+    },
+  });
+  if (!data) {
+    return <div>No event found</div>;
+  }
 
   return (
     <main className="w-full sm:w-[600px] px-4">
