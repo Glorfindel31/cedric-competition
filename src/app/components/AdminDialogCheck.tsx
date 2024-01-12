@@ -21,12 +21,13 @@ import {
 } from '@/components/ui/table';
 
 type AdminDialogCheckProps = {
+  id?: string;
   heldData: any;
   formIsValid: boolean;
   initialValues: any;
   resetForm: () => void;
   handlePost: (data: any) => void;
-  handleUpdate: (data: any) => void;
+  handleUpdate: (data: any, id: string) => Promise<void>;
 };
 
 const AdminDialogCheck: React.FC<AdminDialogCheckProps> = ({
@@ -36,6 +37,7 @@ const AdminDialogCheck: React.FC<AdminDialogCheckProps> = ({
   handlePost,
   initialValues,
   handleUpdate,
+  id,
 }) => {
   const {toast} = useToast();
   const getNewDate = () => {
@@ -89,7 +91,7 @@ const AdminDialogCheck: React.FC<AdminDialogCheckProps> = ({
             {initialValues ? (
               <Button
                 onClick={() => {
-                  handleUpdate(heldData);
+                  id && handleUpdate(heldData, id);
                   toast({
                     title: 'Updated Successfully',
                     description: `${

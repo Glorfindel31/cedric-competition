@@ -80,13 +80,14 @@ async function GET(request: NextRequest) {
 }
 
 async function PUT(request: any) {
+  const searchParams = request.nextUrl.searchParams;
+  const id = searchParams.get('id');
   try {
     const body = await request.json();
-    const {_id, eventName, dateRange, angle, problems} = body;
-
+    const {eventName, dateRange, angle, problems} = body;
     const result = await prisma.events_list.update({
       where: {
-        id: new ObjectId(_id).toString(),
+        id: id,
       },
       data: {
         eventName: eventName,

@@ -48,7 +48,7 @@ const formSchema = z.object({
   ),
 });
 
-type FormValues = z.infer<typeof formSchema> & {_id?: string};
+type FormValues = z.infer<typeof formSchema>;
 
 export interface AdminProblemsProps extends FormFieldProps {
   append: (value: any) => void; //
@@ -63,10 +63,11 @@ export interface FormFieldProps {
 }
 export interface AdminFormProps {
   initialValues?: FormValues;
+  id?: string;
 }
 const prisma = new PrismaClient();
 
-export default function AdminForm({initialValues}: AdminFormProps) {
+export default function AdminForm({initialValues, id}: AdminFormProps) {
   const defaultValues = useMemo(
     () => ({
       eventName: '',
@@ -115,8 +116,8 @@ export default function AdminForm({initialValues}: AdminFormProps) {
     }
   };
 
-  const handleUpdate = async (data: any) => {
-    const response = await fetch('/api/events', {
+  const handleUpdate = async (data: any, id: string) => {
+    const response = await fetch(`/api/events?id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -149,6 +150,7 @@ export default function AdminForm({initialValues}: AdminFormProps) {
           initialValues={initialValues}
           heldData={heldData}
           handlePost={handlePost}
+          id={id}
           handleUpdate={handleUpdate}
           formIsValid={formState.isValid}
           resetForm={reset}
