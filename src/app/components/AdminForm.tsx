@@ -3,7 +3,6 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {useForm, useFieldArray, Control} from 'react-hook-form';
 import {useState, useEffect, useMemo} from 'react';
-import {PrismaClient, Prisma} from '@prisma/client';
 
 //ui
 import {Form} from '@/components/ui/form';
@@ -56,7 +55,6 @@ export interface AdminProblemsProps extends FormFieldProps {
   fields: any[];
   register: any;
 }
-
 export interface FormFieldProps {
   control?: Control<FormValues>;
   name: any;
@@ -65,7 +63,6 @@ export interface AdminFormProps {
   initialValues?: FormValues;
   id?: string;
 }
-const prisma = new PrismaClient();
 
 export default function AdminForm({initialValues, id}: AdminFormProps) {
   const defaultValues = useMemo(

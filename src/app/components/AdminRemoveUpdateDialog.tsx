@@ -11,10 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import {Button, buttonVariants} from '@/components/ui/button';
+import {getNewDate} from '@/lib/utils';
 import {useToast} from '@/components/ui/use-toast';
 import Link from 'next/link';
 
 export default function AdminRemoveUpdateDialog(eventId: any) {
+  const {toast} = useToast();
   const handleRemove = async () => {
     const response = await fetch(`/api/events?id=${eventId.eventId}`, {
       method: 'DELETE',
@@ -23,23 +25,19 @@ export default function AdminRemoveUpdateDialog(eventId: any) {
       },
     });
     if (!response.ok) {
+      const errorData = await response.json();
+      toast({
+        title: 'Event Removed Successfully',
+        description: `${errorData} at ${getNewDate()}`,
+      });
       throw new Error('Something went wrong!');
     } else {
+      toast({
+        title: 'Event Removed Successfully',
+        description: `${eventId.eventName} has been remove the ${getNewDate()}`,
+      });
       window.location.reload();
     }
-  };
-  const {toast} = useToast();
-  const getNewDate = () => {
-    let date = new Date();
-    let day = ('0' + date.getDate()).slice(-2);
-    let month = ('0' + (date.getMonth() + 1)).slice(-2);
-    let year = date.getFullYear();
-    let hours = ('0' + date.getHours()).slice(-2);
-    let minutes = ('0' + date.getMinutes()).slice(-2);
-    let seconds = ('0' + date.getSeconds()).slice(-2);
-
-    let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    return formattedDate;
   };
 
   return (
@@ -63,12 +61,7 @@ export default function AdminRemoveUpdateDialog(eventId: any) {
             <AlertDialogAction
               onClick={() => {
                 handleRemove();
-                toast({
-                  title: 'Event Removed Successfully',
-                  description: `${eventId.eventName} has been remove the ${getNewDate()}`,
-                });
-              }}
-            >
+              }}>
               Remove
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -76,8 +69,7 @@ export default function AdminRemoveUpdateDialog(eventId: any) {
       </AlertDialog>
       <Link
         className={buttonVariants({variant: 'secondary'})}
-        href={`/admin/eventUpdate/${eventId.eventId}`}
-      >
+        href={`/admin/eventUpdate/${eventId.eventId}`}>
         Update
       </Link>
     </div>

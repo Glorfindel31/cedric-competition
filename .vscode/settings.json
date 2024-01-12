@@ -1,5 +1,8 @@
 {
   "cSpell.words": ["lucide"],
   "editor.fontSize": 14,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }

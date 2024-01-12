@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/card';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
+import {useToast} from '@/components/ui/use-toast';
+import {getNewDate} from '@/lib/utils';
 import {Button} from '@/components/ui/button';
 import {
   Form,
@@ -41,6 +43,7 @@ const formSchema = z
     password: z.string().min(2).max(50),
     confirmPassword: z.string().min(2).max(50),
     email: z.string().email(),
+    role: z.enum(['user', 'admin']),
     gender: z.enum(['male', 'female', 'other'], {
       errorMap: () => {
         return {message: 'Please select a gender'};
@@ -60,20 +63,46 @@ const formSchema = z
 interface Props {}
 
 const Page: NextPage<Props> = ({}) => {
+  const {toast} = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
       email: '',
+      role: 'user',
       password: '',
       confirmPassword: '',
       gender: undefined,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    form.reset();
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const response = await fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Failed to register', errorData);
+      // Display toast with error message
+      toast({
+        title: 'Failed to register',
+        description: errorData.error,
+      });
+    } else {
+      const successData = await response.json();
+      console.log('Registration successful', successData);
+      // Display toast with success message
+      toast({
+        title: 'Registered Successfully',
+        description: 'Your account has been successfully registered.',
+      });
+      form.reset();
+    }
   }
 
   return (
