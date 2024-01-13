@@ -50,9 +50,8 @@ const Page = () => {
       username: values.username.toString(),
       password: values.password.toString(),
       redirect: true,
-      callbackUrl: '/admin',
-    },
-    );
+      callbackUrl: '/',
+    });
     form.reset();
   }
 
@@ -97,8 +96,7 @@ const Page = () => {
               <Link
                 href="/forgot-password"
                 className={buttonVariants({variant: 'link'}) + ' text-sm'}
-                style={{padding: '0'}}
-              >
+                style={{padding: '0'}}>
                 Reset Password?
               </Link>
             </CardContent>

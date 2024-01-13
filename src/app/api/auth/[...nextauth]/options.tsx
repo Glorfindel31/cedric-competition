@@ -1,36 +1,37 @@
 import type {NextAuthOptions} from 'next-auth';
-import GitHubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
+// import GitHubProvider from 'next-auth/providers/github';
+// import GoogleProvider from 'next-auth/providers/google';
+// import {GithubProfile} from 'next-auth/providers/github';
+// import {GoogleProfile} from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import {GithubProfile} from 'next-auth/providers/github';
-import {GoogleProfile} from 'next-auth/providers/google';
+import {authIn} from '@/lib/auth';
 
 export const options: NextAuthOptions = {
   providers: [
-    GitHubProvider({
-      profile(profile: GithubProfile) {
-        // console.log(profile);
-        return {
-          ...profile,
-          role: profile.role ?? 'user',
-          id: profile.id.toString(),
-        };
-      },
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    }),
-    GoogleProvider({
-      profile(profile: GoogleProfile) {
-        // console.log(profile);
-        return {
-          ...profile,
-          role: profile.role ?? 'user',
-          id: profile.id.toString(),
-        };
-      },
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
+    // GitHubProvider({
+    //   profile(profile: GithubProfile) {
+    //     // console.log(profile);
+    //     return {
+    //       ...profile,
+    //       role: profile.role ?? 'user',
+    //       id: profile.id.toString(),
+    //     };
+    //   },
+    //   clientId: process.env.GITHUB_CLIENT_ID as string,
+    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    // }),
+    // GoogleProvider({
+    //   profile(profile: GoogleProfile) {
+    //     // console.log(profile);
+    //     return {
+    //       ...profile,
+    //       role: profile.role ?? 'user',
+    //       id: profile.id.toString(),
+    //     };
+    //   },
+    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    // }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -38,21 +39,12 @@ export const options: NextAuthOptions = {
         password: {label: 'Password', type: 'password', placeholder: '********'},
       },
       async authorize(credentials) {
-        //remember that it is here where you will have to get the data from mongoDB
-        const admin = {
-          id: '01',
-          name: 'Cedric',
-          email: 'cedric31flo@gmail.com',
-          username: 'admin',
-          role: 'admin',
-          password: '123456789',
-        };
-        if (
-          credentials?.username === admin.username &&
-          credentials?.password === admin.password
-        ) {
-          return admin;
-        } else {
+        if (!credentials?.username || !credentials?.password) return null;
+        try {
+          const user = await authIn(credentials.username, credentials.password);
+          return user;
+        } catch (error) {
+          console.error(error);
           return null;
         }
       },
@@ -61,11 +53,17 @@ export const options: NextAuthOptions = {
   callbacks: {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
     async jwt({token, user}) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+        token.name = user.name;
+      }
       return token;
     },
     async session({session, token}) {
-      if (session?.user) session.user.role = token.role;
+      if (session?.user) {
+        session.user.role = token.role;
+        session.user.name = token.name;
+      }
       return session;
     },
   },

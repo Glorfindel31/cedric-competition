@@ -1,5 +1,4 @@
 'use client';
-import {NextPage} from 'next';
 import {
   Card,
   CardContent,
@@ -32,7 +31,6 @@ import {
 import {Input} from '@/components/ui/input';
 
 import * as z from 'zod';
-import Link from 'next/link';
 
 const formSchema = z
   .object({
@@ -60,9 +58,7 @@ const formSchema = z
     }
   });
 
-interface Props {}
-
-const Page: NextPage<Props> = ({}) => {
+export default function Page({}) {
   const {toast} = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -118,7 +114,6 @@ const Page: NextPage<Props> = ({}) => {
   }
 
   return (
-    //register page
     <main className="w-full sm:w-[600px] px-4">
       <Card className="my-8">
         <CardHeader>
@@ -218,6 +213,4 @@ const Page: NextPage<Props> = ({}) => {
       </Card>
     </main>
   );
-};
-
-export default Page;
+}

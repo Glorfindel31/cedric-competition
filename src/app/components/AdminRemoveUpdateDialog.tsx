@@ -36,7 +36,9 @@ export default function AdminRemoveUpdateDialog(eventId: any) {
         title: 'Event Removed Successfully',
         description: `${eventId.eventName} has been remove the ${getNewDate()}`,
       });
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
   };
 

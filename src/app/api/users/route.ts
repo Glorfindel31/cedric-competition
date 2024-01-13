@@ -1,11 +1,8 @@
-import {ObjectId} from 'mongodb';
 import {NextResponse, NextRequest} from 'next/server';
-import {PrismaClient} from '@prisma/client';
+import {prisma} from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
 const saltRounds = 10;
-
-const prisma = new PrismaClient();
 
 async function POST(request: NextRequest) {
   try {

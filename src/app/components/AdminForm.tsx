@@ -3,6 +3,8 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {useForm, useFieldArray, Control} from 'react-hook-form';
 import {useState, useEffect, useMemo} from 'react';
+import {useToast} from '@/components/ui/use-toast';
+import {getNewDate} from '@/lib/utils';
 
 //ui
 import {Form} from '@/components/ui/form';
@@ -65,6 +67,7 @@ export interface AdminFormProps {
 }
 
 export default function AdminForm({initialValues, id}: AdminFormProps) {
+  const toast = useToast();
   const defaultValues = useMemo(
     () => ({
       eventName: '',
@@ -108,8 +111,18 @@ export default function AdminForm({initialValues, id}: AdminFormProps) {
     });
     if (!response.ok) {
       console.error('Failed to submit', await response.text());
+      toast.toast({
+        title: 'Failed to submit',
+        description: `Failed to submit event. ${getNewDate()}`,
+      });
     } else {
-      window.location.reload();
+      toast.toast({
+        title: 'Submitted Successfully',
+        description: `Your event has been successfully submitted. ${getNewDate()}`,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
   };
 
@@ -123,9 +136,18 @@ export default function AdminForm({initialValues, id}: AdminFormProps) {
     });
     if (!response.ok) {
       console.error('Failed to submit', await response.text());
+      toast.toast({
+        title: 'Failed to update',
+        description: `Failed to update event. ${getNewDate()}`,
+      });
     } else {
-      // return to admin page
-      window.location.href = '/admin';
+      toast.toast({
+        title: 'Updated Successfully',
+        description: `Your event has been successfully updated. ${getNewDate()}`,
+      });
+      setTimeout(() => {
+        window.location.href = '/admin';
+      }, 2000);
     }
   };
 

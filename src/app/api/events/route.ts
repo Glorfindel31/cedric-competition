@@ -1,8 +1,7 @@
 import {ObjectId} from 'mongodb';
 import {NextResponse, NextRequest} from 'next/server';
-import {PrismaClient} from '@prisma/client';
+import {prisma} from '@/lib/prisma';
 
-const prisma = new PrismaClient();
 async function POST(request: any) {
   try {
     const body = await request.json();
