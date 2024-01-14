@@ -13,7 +13,7 @@ const Page = async ({}) => {
   return (
     <main className="w-full sm:w-[600px] px-4">
       <h1 className="text-4xl font-bold tracking-tight my-8">
-        Welcome Back Admin {session?.user.name}
+        Welcome Back {session?.user.name}
       </h1>
       <AdminForm />
       <Separator className="my-4" />

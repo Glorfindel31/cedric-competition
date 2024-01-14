@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["lucide"],
+  "cSpell.words": ["hookform", "Kilterboard", "lucide", "nextauth"],
   "editor.fontSize": 14,
   "editor.tabSize": 2,
   "[prisma]": {

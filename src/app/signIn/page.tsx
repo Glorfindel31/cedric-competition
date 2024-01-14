@@ -1,4 +1,7 @@
 'use client';
+import {NextPage} from 'next';
+import {useSearchParams} from 'next/navigation';
+import {useEffect, useState} from 'react';
 import * as z from 'zod';
 
 import {signIn} from 'next-auth/react';
@@ -32,11 +35,28 @@ import {
 import Link from 'next/link';
 
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
-  password: z.string().min(2).max(50),
+  username: z
+    .string()
+    .min(3, {message: 'Username must be more than 3 characters'})
+    .max(20, {message: 'Username must be less than 20 characters'}),
+  password: z
+    .string()
+    .min(5, {message: 'Password must be more than 5 characters'})
+    .max(50, {message: 'Password must be less than 50 characters'}),
 });
 
-const Page = () => {
+interface Props {}
+
+const Page: NextPage<Props> = ({}) => {
+  const searchParams = useSearchParams();
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchParams.has('error')) {
+      setError(searchParams.get('error'));
+    }
+  }, [searchParams]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,11 +72,10 @@ const Page = () => {
       redirect: true,
       callbackUrl: '/',
     });
-    form.reset();
+    // form.reset();
   }
 
   return (
-    //login page
     <main className="w-full sm:w-[600px] px-4">
       <Card className="my-8">
         <CardHeader>
@@ -71,7 +90,12 @@ const Page = () => {
                 name="username"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    {error ? (
+                      <FormLabel className="text-destructive">Username</FormLabel>
+                    ) : (
+                      <FormLabel>Username</FormLabel>
+                    )}
+
                     <FormControl>
                       <Input placeholder="Username" {...field} />
                     </FormControl>
@@ -85,7 +109,11 @@ const Page = () => {
                 name="password"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    {error ? (
+                      <FormLabel className="text-destructive">Password</FormLabel>
+                    ) : (
+                      <FormLabel>Password</FormLabel>
+                    )}
                     <FormControl>
                       <Input type="password" placeholder="********" {...field} />
                     </FormControl>
@@ -93,6 +121,11 @@ const Page = () => {
                   </FormItem>
                 )}
               />
+              {error && (
+                <p className="text-sm font-medium text-destructive">
+                  Password or Username incorrect. Try again.
+                </p>
+              )}
               <Link
                 href="/forgot-password"
                 className={buttonVariants({variant: 'link'}) + ' text-sm'}

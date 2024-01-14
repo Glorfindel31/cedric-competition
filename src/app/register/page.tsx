@@ -36,10 +36,13 @@ const formSchema = z
   .object({
     username: z
       .string()
-      .min(2, {message: 'Must be more than 2 characters'})
-      .max(50, {message: 'Must be less than 50 characters'}),
-    password: z.string().min(2).max(50),
-    confirmPassword: z.string().min(2).max(50),
+      .min(3, {message: 'Username must be more than 3 characters'})
+      .max(20, {message: 'Username must be less than 20 characters'}),
+    password: z
+      .string()
+      .min(5, {message: 'Password must be more than 5 characters'})
+      .max(50, {message: 'Password must be less than 50 characters'}),
+    confirmPassword: z.string().min(5).max(50),
     email: z.string().email(),
     role: z.enum(['user', 'admin']),
     gender: z.enum(['male', 'female', 'other'], {
