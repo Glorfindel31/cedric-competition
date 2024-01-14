@@ -1,5 +1,13 @@
 {
-  "cSpell.words": ["hookform", "Kilterboard", "lucide", "nextauth"],
+  "cSpell.words": [
+    "Florentin",
+    "hookform",
+    "Kilterboard",
+    "lucide",
+    "nextauth",
+    "Vietclimb",
+    "vietclimbs"
+  ],
   "editor.fontSize": 14,
   "editor.tabSize": 2,
   "[prisma]": {
