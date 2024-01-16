@@ -26,15 +26,12 @@ model events_list {
 }
 
 type UserListProblems {
-  grade Int
-  name  String
-  top   Boolean
+  grade Int?
+  name  String?
 }
 
 type UserEventsList {
   id        String
-  angle     Int
-  dateRange EventsListDateRange
   eventName String
   problems  UserListProblems[]
 }
