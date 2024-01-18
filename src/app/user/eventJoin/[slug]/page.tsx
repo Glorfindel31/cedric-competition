@@ -41,6 +41,45 @@ const Page = async ({
     user.password = '';
   }
 
+  const isEventRegistered = await prisma.users_list.count({
+    where: {
+      AND: [
+        {
+          id: userId,
+        },
+        {
+          events_list: {
+            some: {
+              id: eventId,
+            },
+          },
+        },
+      ],
+    },
+  });
+  if (isEventRegistered === 0) {
+    const response = await prisma.users_list.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        events_list: {
+          id: eventId,
+          eventName: event.eventName,
+          problems: event.problems.map(problem => ({
+            name: problem.name,
+            grade: problem.grade,
+            top: false,
+          })),
+        },
+      },
+    });
+    console.log(response);
+  } else {
+    const userEvent = user.events_list.find(event => event.id === eventId);
+    return userEvent;
+  }
+
   return (
     <main className="w-full sm:w-[600px] p-4">
       <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 uppercase">
@@ -61,7 +100,7 @@ const Page = async ({
             <TableRow key={index}>
               <TableCell className="w-1/2 font-medium py-1">{problem.name}</TableCell>
               <TableCell className="w-1/6 text-center py-1">V{problem.grade}</TableCell>
-              <TableCell className="w-1/6 text-center py-1">Status</TableCell>
+              <TableCell className="w-1/6 text-center py-1">No Top</TableCell>
               <TableCell className="w-1/6 text-right py-1">
                 <Button>Log Accent</Button>
               </TableCell>

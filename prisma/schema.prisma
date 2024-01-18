@@ -28,6 +28,7 @@ model events_list {
 type UserListProblems {
   grade Int?
   name  String?
+  top   Boolean
 }
 
 type UserEventsList {

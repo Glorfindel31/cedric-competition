@@ -7,7 +7,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {Button} from '@/components/ui/button';
-import {prisma} from '@lib/prisma';
 import Link from 'next/link';
 
 const dateMod = (date: string) => {
@@ -19,7 +18,7 @@ const dateMod = (date: string) => {
   });
 };
 
-export default async function UserEventsList({data, user}: any) {
+export default function UserEventsList({data, user}: any) {
   const isDateOk = (date: any) => {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -30,34 +29,6 @@ export default async function UserEventsList({data, user}: any) {
     return now >= from && now <= to;
   };
   if (!data) return null;
-  //need to create an api route for this because the call is made from the client side
-  const isEventRegistered = await prisma.users_list.count({
-    where: {
-      id: user.id,
-      events_list: {
-        every: {
-          id: data.id,
-        },
-      },
-    },
-  });
-
-  const handleRegisterEvent = async () => {
-    if (isEventRegistered > 0) {
-      const userUpdate = await prisma.users_list.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          events_list: {
-            id: data.id,
-            eventName: data.eventName,
-            problems: {},
-          },
-        },
-      });
-    }
-  };
 
   return (
     <Table>
@@ -79,11 +50,7 @@ export default async function UserEventsList({data, user}: any) {
             {isDateOk(item.dateRange) ? (
               <TableCell className="text-right">
                 <Button asChild variant="outline">
-                  <Link
-                    onClick={handleRegisterEvent}
-                    href={`user/eventJoin/${item.id}?user=${user.id}`}>
-                    Join
-                  </Link>
+                  <Link href={`user/eventJoin/${item.id}?user=${user.id}`}>Join</Link>
                 </Button>
               </TableCell>
             ) : (
