@@ -17,32 +17,32 @@ type EventsListProblems {
   name  String
 }
 
+type TopList {
+  problem String
+  grade   Int
+}
+
+type ParticipantsList {
+  user_id  String
+  username String
+  top_list TopList[]
+}
+
 model events_list {
-  id        String               @id @default(auto()) @map("_id") @db.ObjectId
-  angle     Int
-  dateRange EventsListDateRange
-  eventName String
-  problems  EventsListProblems[]
-}
-
-type UserListProblems {
-  grade Int?
-  name  String?
-  top   Boolean
-}
-
-type UserEventsList {
-  id        String
-  eventName String
-  problems  UserListProblems[]
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  angle              Int
+  dateRange          EventsListDateRange
+  eventName          String
+  problems           EventsListProblems[]
+  maleParticipants   ParticipantsList[]
+  femaleParticipants ParticipantsList[]
 }
 
 model users_list {
-  id          String           @id @default(auto()) @map("_id") @db.ObjectId
-  email       String           @unique
-  password    String
-  role        String
-  username    String           @unique
-  gender      String
-  events_list UserEventsList[]
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  password String
+  role     String
+  username String @unique
+  gender   String
 }

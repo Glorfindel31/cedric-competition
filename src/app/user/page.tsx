@@ -26,7 +26,7 @@ const Page = async ({}) => {
         {session.user.name}
       </h1>{' '}
       <blockquote className="mt-6 border-l-2 pl-6 italic">
-        Welcome to your personal space.
+        Welcome to your personal space. Don&apos;t worry it&apos;s your safe space...
       </blockquote>
       <Separator className="my-4" />
       <UserEventsList data={event_data} user={userData} />

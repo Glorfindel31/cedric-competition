@@ -15,6 +15,8 @@ async function POST(request: any) {
           name: problem.name,
           grade: problem.grade,
         })),
+        maleParticipants: [],
+        femaleParticipants: [],
       },
     });
     return NextResponse.json(result);

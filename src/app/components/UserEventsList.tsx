@@ -17,17 +17,13 @@ const dateMod = (date: string) => {
     year: '2-digit',
   });
 };
+// trunk millisecond of dates to compare only the day...
+const truncDate = (date: Date) => Math.trunc(date.getTime() / 1000000);
+const isDateOk = (date: any) =>
+  truncDate(new Date()) >= truncDate(new Date(date.from)) &&
+  truncDate(new Date()) <= truncDate(new Date(date.to));
 
 export default function UserEventsList({data, user}: any) {
-  const isDateOk = (date: any) => {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const from = new Date(new Date(date.from).toISOString());
-    from.setHours(0, 0, 0, 0);
-    const to = new Date(new Date(date.to).toISOString());
-    to.setHours(0, 0, 0, 0);
-    return now >= from && now <= to;
-  };
   if (!data) return null;
 
   return (
@@ -50,7 +46,7 @@ export default function UserEventsList({data, user}: any) {
             {isDateOk(item.dateRange) ? (
               <TableCell className="text-right">
                 <Button asChild variant="outline">
-                  <Link href={`user/eventJoin/${item.id}?user=${user.id}`}>Join</Link>
+                  <Link href={`user/eventJoin/${item.id}`}>Join</Link>
                 </Button>
               </TableCell>
             ) : (
