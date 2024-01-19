@@ -14,6 +14,7 @@ import AdminDateRange from '@components/AdminDateRange';
 import AdminAngle from '@components/AdminAngle';
 import AdminProblems from '@components/AdminProblems';
 import AdminDialogCheck from '@components/AdminDialogCheck';
+import AdminKilterUrl from '@components/AdminKilterUrl';
 
 const formSchema = z.object({
   _id: z.string().optional(),
@@ -25,6 +26,7 @@ const formSchema = z.object({
     .max(100, {
       message: 'Must be at less than 100 characters.',
     }),
+  kilterListLink: z.string().url(),
   dateRange: z.object({
     from: z.date(),
     to: z.date(),
@@ -71,6 +73,7 @@ export default function AdminForm({initialValues, id}: AdminFormProps) {
   const defaultValues = useMemo(
     () => ({
       eventName: '',
+      kilterListLink: 'https://kilterboardapp.com/circuits/[YOUR_CIRCUIT_ID]',
       angle: undefined,
       dateRange: {
         from: new Date(),
@@ -155,6 +158,7 @@ export default function AdminForm({initialValues, id}: AdminFormProps) {
     <Form {...{register, formState, reset, ...rest}}>
       <form onSubmit={rest.handleSubmit(onSubmit)} className="space-y-8">
         <AdminEventName control={rest.control} name={'eventName'} />
+        <AdminKilterUrl control={rest.control} name={'kilterListLink'} />
         <AdminDateRange name={'dateRange'} />
         <AdminAngle control={rest.control} name={'angle'} />
         <AdminProblems

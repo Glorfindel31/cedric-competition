@@ -5,10 +5,11 @@ import {prisma} from '@/lib/prisma';
 async function POST(request: any) {
   try {
     const body = await request.json();
-    const {eventName, dateRange, angle, problems} = body;
+    const {eventName, kilterListLink, dateRange, angle, problems} = body;
     const result = await prisma.events_list.create({
       data: {
         eventName,
+        kilterListLink,
         dateRange,
         angle,
         problems: problems.map((problem: any) => ({
@@ -53,13 +54,14 @@ async function PUT(request: any) {
   const id = searchParams.get('id');
   try {
     const body = await request.json();
-    const {eventName, dateRange, angle, problems} = body;
+    const {eventName, kilterListLink, dateRange, angle, problems} = body;
     const result = await prisma.events_list.update({
       where: {
         id: id,
       },
       data: {
         eventName: eventName,
+        kilterListLink: kilterListLink,
         dateRange: dateRange,
         angle: angle,
         problems: problems,

@@ -36,6 +36,7 @@ model events_list {
   problems           EventsListProblems[]
   maleParticipants   ParticipantsList[]
   femaleParticipants ParticipantsList[]
+  kilterListLink     String
 }
 
 model users_list {
