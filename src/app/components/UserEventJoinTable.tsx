@@ -1,4 +1,5 @@
 'use client';
+import {useToast} from '@/components/ui/use-toast';
 import {
   Table,
   TableBody,
@@ -29,34 +30,41 @@ type Props = {
 };
 
 export default function UserEventJoinTable(props: Props) {
+  const toast = useToast();
   const {eventData, userId, gender} = props;
   const participantList = eventData[gender + 'Participants'];
   const userParticipant = participantList.find(
     (participant: any) => participant.user_id === userId,
   );
   const userTopList = userParticipant ? userParticipant.top_list : [];
+  let totalPoints = 0;
 
   const handleRegister = async (problemName: string, grade: number) => {
-    // const response = await fetch('/api/events/register', {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    // problemName: problemName,
-    // userId: userId,
-    // eventId: eventData.id,
-    // grade: grade,
-    //   }),
-    // });
-    // if (!response.ok) throw new Error(response.statusText);
-    const body = JSON.stringify({
-      problemName: problemName,
-      userId: userId,
-      eventId: eventData.id,
-      grade: grade,
-    });
-    console.log(body);
+    try {
+      const response = await fetch('/api/events/register', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          problemName: problemName,
+          userId: userId,
+          eventId: eventData.id,
+          grade: grade,
+          gender: gender,
+        }),
+      });
+      if (!response.ok) throw new Error(response.statusText);
+      toast.toast({
+        title: 'Problem Registered',
+        description: `You have successfully registered for ${problemName}`,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -73,6 +81,7 @@ export default function UserEventJoinTable(props: Props) {
       <TableBody>
         {eventData.problems.map((problem: any, index: any) => {
           const isTop = userTopList.some((top: any) => top.problem === problem.name);
+          isTop ? (totalPoints += problem.grade) : null;
           return (
             <TableRow key={`${eventData.id}-${index}`}>
               <TableCell className="w-1/2 font-medium py-1">{problem.name}</TableCell>
@@ -83,7 +92,13 @@ export default function UserEventJoinTable(props: Props) {
               <TableCell className="w-1/6 text-right py-1">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline">Log Ascent</Button>
+                    {isTop ? (
+                      <Button disabled variant="outline">
+                        Log Ascent
+                      </Button>
+                    ) : (
+                      <Button variant="outline">Log Ascent</Button>
+                    )}
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -109,7 +124,7 @@ export default function UserEventJoinTable(props: Props) {
       <TableFooter>
         <TableRow>
           <TableCell colSpan={3}>Total Points</TableCell>
-          <TableCell className="text-right">0</TableCell>
+          <TableCell className="text-right">{totalPoints}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>
