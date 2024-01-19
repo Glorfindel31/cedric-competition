@@ -9,6 +9,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import {Button} from '@/components/ui/button';
 
 type Props = {
@@ -24,6 +35,29 @@ export default function UserEventJoinTable(props: Props) {
     (participant: any) => participant.user_id === userId,
   );
   const userTopList = userParticipant ? userParticipant.top_list : [];
+
+  const handleRegister = async (problemName: string, grade: number) => {
+    // const response = await fetch('/api/events/register', {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    // problemName: problemName,
+    // userId: userId,
+    // eventId: eventData.id,
+    // grade: grade,
+    //   }),
+    // });
+    // if (!response.ok) throw new Error(response.statusText);
+    const body = JSON.stringify({
+      problemName: problemName,
+      userId: userId,
+      eventId: eventData.id,
+      grade: grade,
+    });
+    console.log(body);
+  };
 
   return (
     <Table>
@@ -47,7 +81,26 @@ export default function UserEventJoinTable(props: Props) {
                 {isTop ? 'Top' : 'No Top'}
               </TableCell>
               <TableCell className="w-1/6 text-right py-1">
-                <Button>Log Accent</Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline">Log Ascent</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        No Dab - No fake start?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleRegister(problem.name, problem.grade)}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           );

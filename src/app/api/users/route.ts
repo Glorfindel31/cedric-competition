@@ -54,26 +54,4 @@ async function POST(request: NextRequest) {
   }
 }
 
-async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const id = body.id;
-
-    // const userUpdate = await prisma.users_list.update({
-    //   where: {
-    //     id: user.id,
-    //   },
-    //   data: {
-    //     events_list: {
-    //       id: data.id,
-    //       eventName: data.eventName,
-    //       problems: {},
-    //     },
-    //   },
-    // });
-  } catch (error) {
-    return NextResponse.json({error: error}, {status: 500});
-  }
-}
-
-export {POST, PUT};
+export {POST};
