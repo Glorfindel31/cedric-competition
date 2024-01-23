@@ -1,6 +1,5 @@
 import {NextResponse, NextRequest} from 'next/server';
 import {prisma} from '@/lib/prisma';
-import {json} from 'stream/consumers';
 
 async function PUT(request: NextRequest) {
   try {
@@ -16,13 +15,23 @@ async function PUT(request: NextRequest) {
     // Find if the problems exist in the participants list
     let isProblemLogged = false;
     if (event && gender === 'male') {
-      isProblemLogged = event?.maleParticipants.some(participant =>
-        participant.top_list.some(item => item.problem === problemName),
+      const maleParticipant = event.maleParticipants.find(
+        participant => participant.user_id === userId,
       );
+      if (maleParticipant) {
+        isProblemLogged = maleParticipant.top_list.some(
+          item => item.problem === problemName,
+        );
+      }
     } else if (event && gender === 'female') {
-      isProblemLogged = event?.femaleParticipants.some(participant =>
-        participant.top_list.some(item => item.problem === problemName),
+      const femaleParticipant = event.femaleParticipants.find(
+        participant => participant.user_id === userId,
       );
+      if (femaleParticipant) {
+        isProblemLogged = femaleParticipant.top_list.some(
+          item => item.problem === problemName,
+        );
+      }
     }
 
     if (isProblemLogged) {

@@ -1,108 +1,65 @@
-import {Payment, columns} from './columns';
+import prisma from '@/lib/prisma';
+import {Ranking, columns} from './columns';
 import {DataTable} from './data-table';
 
-async function getData(): Promise<Payment[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: 'm5gr84i9',
-      amount: 316,
-      status: 'success',
-      email: 'ken99@yahoo.com',
-    },
-    {
-      id: '3u1reuv4',
-      amount: 242,
-      status: 'success',
-      email: 'Abe45@gmail.com',
-    },
-    {
-      id: 'derv1ws0',
-      amount: 837,
-      status: 'processing',
-      email: 'Monserrat44@gmail.com',
-    },
-    {
-      id: '5kma53ae',
-      amount: 874,
-      status: 'success',
-      email: 'Silas22@gmail.com',
-    },
-    {
-      id: 'bhqecj4p',
-      amount: 721,
-      status: 'failed',
-      email: 'carmella@hotmail.com',
-    },
-    {
-      id: 'a1b2c3d4',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'e5f6g7h8',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'i9j0k1l2',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'm4n5b6c7',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'p8r9t0u1',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'v3w4x5y6',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'z7a8b9c0',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'd1e2f3g4',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'h5i6j7k8',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-    {
-      id: 'n9o0p1q2',
-      amount: Math.floor(Math.random() * 1000) + 1,
-      status: ['success', 'processing', 'failed'][Math.floor(Math.random() * 3)],
-      email: `${Math.floor(Math.random() * 1000)}@example.com`,
-    },
-  ];
+async function getRankingData(participants, category) {
+  return participants
+    .flat()
+    .reduce((acc, participant) => {
+      const existingUser = acc.find(user => user.id === participant.user_id);
+      if (existingUser) {
+        existingUser.points += participant.top_list.reduce(
+          (total, item) => total + item.grade,
+          0,
+        );
+        existingUser.problems_count += participant.top_list.length;
+      } else {
+        const points = participant.top_list.reduce(
+          (total, item) => total + item.grade,
+          0,
+        );
+        const problemsCount = participant.top_list.length;
+        const userId = participant.user_id;
+
+        const eventCount = participants.reduce((acc, event) => {
+          const eventCount = event.reduce(
+            (innerAcc, participant) =>
+              participant.user_id === userId ? innerAcc + 1 : innerAcc,
+            0,
+          );
+          return acc + eventCount;
+        }, 0);
+
+        acc.push({
+          id: participant.user_id,
+          name: participant.username,
+          points,
+          problems_count: problemsCount,
+          event_participation: eventCount,
+          category,
+        });
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => b.points - a.points);
 }
 
-export default async function DemoPage() {
-  const data = await getData();
+export default async function page() {
+  const data = await prisma.events_list.findMany();
+  if (data) {
+    const maleParticipants = data.map(event => event.maleParticipants);
+    const femaleParticipants = data.map(event => event.femaleParticipants);
 
-  return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
-    </div>
-  );
+    const maleRankingData = await getRankingData(maleParticipants, 'Male');
+    const femaleRankingData = await getRankingData(femaleParticipants, 'Female');
+
+    const rankingData = [...maleRankingData, ...femaleRankingData];
+    return (
+      <div className="container mx-auto py-10">
+        <DataTable columns={columns} data={rankingData} />
+      </div>
+    );
+  } else {
+    return <div>No data</div>;
+  }
 }

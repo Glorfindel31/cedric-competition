@@ -184,11 +184,11 @@ export default function Page({}) {
                 name="gender"
                 render={({field}) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Category</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a Gender" />
+                          <SelectValue placeholder="Select a Category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
