@@ -6,15 +6,29 @@ import React from 'react';
 import {Badge} from '@/components/ui/badge';
 
 interface DashboardTableProps {
-  data: any;
+  data: EventData[];
   categories: boolean;
+}
+
+interface EventData {
+  dateRange: {
+    from: string;
+    to: string;
+  };
+  problems: {name: string; grade: number}[];
+  maleParticipants: Participant[];
+  femaleParticipants: Participant[];
+  id: string;
+  angle: number;
+  eventName: string;
+  kilterListLink: string;
 }
 
 const DashboardTableFullEvent: React.FC<DashboardTableProps> = ({data, categories}) => {
   if (data && categories === false) {
     const maleParticipants: Participant[] = data
       .flatMap(event => event?.maleParticipants)
-      .filter(participant => participant !== undefined) as Participant[];
+      .filter((participant): participant is Participant => participant !== undefined);
 
     const femaleParticipants: Participant[] = data
       .flatMap(event => event?.femaleParticipants)

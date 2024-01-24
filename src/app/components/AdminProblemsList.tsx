@@ -13,8 +13,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import AdminRemoveUpdateDialog from './AdminRemoveUpdateDialog';
-import {PrismaClient} from '@prisma/client';
-const prisma = new PrismaClient();
+import {prisma} from '@/lib/prisma';
 
 const AdminProblemsList = async () => {
   const data = await prisma.events_list.findMany();
