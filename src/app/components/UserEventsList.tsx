@@ -43,19 +43,11 @@ export default function UserEventsList({data, user}: any) {
               From: {dateMod(item.dateRange.from)}
               <br /> to: {dateMod(item.dateRange.to)}
             </TableCell>
-            {isDateOk(item.dateRange) ? (
-              <TableCell className="text-right">
-                <Button asChild variant="outline">
-                  <Link href={`user/eventJoin/${item.id}`}>Join</Link>
-                </Button>
-              </TableCell>
-            ) : (
-              <TableCell className="text-right">
-                <Button variant="outline" disabled>
-                  Join
-                </Button>
-              </TableCell>
-            )}
+            <TableCell className="text-right">
+              <Button asChild variant="outline" disabled={!isDateOk(item.dateRange)}>
+                <Link href={`user/eventJoin/${item.id}`}>Join</Link>
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

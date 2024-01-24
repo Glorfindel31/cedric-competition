@@ -47,10 +47,10 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
@@ -60,7 +60,7 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
   });
 
   return (
-    <div>
+    <div className="p-0">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter by name..."
@@ -114,7 +114,7 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
               table.getRowModel().rows.map(row => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-center">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

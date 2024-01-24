@@ -81,7 +81,7 @@ export default function UserEventJoinTable(props: Props) {
       <TableBody>
         {eventData.problems.map((problem: any, index: any) => {
           const isTop = userTopList.some((top: any) => top.problem === problem.name);
-          isTop ? (totalPoints += problem.grade) : null;
+          isTop ? (totalPoints += problem.grade + 1) : null;
           return (
             <TableRow key={`${eventData.id}-${index}`}>
               <TableCell className="w-1/2 font-medium py-1">{problem.name}</TableCell>

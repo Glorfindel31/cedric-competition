@@ -14,7 +14,6 @@ export type Ranking = {
   category: string;
 };
 
-
 export const columns: ColumnDef<Ranking>[] = [
   {
     accessorKey: 'rank',
@@ -23,10 +22,13 @@ export const columns: ColumnDef<Ranking>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Rank #
+          # Rank
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({row}) => {
+      return <div className="text-center"># {row.getValue('rank')}</div>;
     },
   },
   {
@@ -48,7 +50,7 @@ export const columns: ColumnDef<Ranking>[] = [
   },
   {
     accessorKey: 'event_participation',
-    header: 'Number of events joined',
+    header: 'Events joined',
   },
   {
     accessorKey: 'points',
