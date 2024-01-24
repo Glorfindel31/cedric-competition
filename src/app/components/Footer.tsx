@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import {buttonVariants} from '@/components/ui/button';
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
-import logo from '/public/Vietclimb - Logo 2022.png';
+import logo from '/public/logo.png';
 
 export default function Footer() {
   return (
