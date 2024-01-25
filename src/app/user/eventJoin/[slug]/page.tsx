@@ -3,6 +3,7 @@ import {getServerSession} from 'next-auth/next';
 import {redirect} from 'next/navigation';
 import {prisma} from '@/lib/prisma';
 import UserEventJoinTable from '@/components/UserEventJoinTable';
+import Link from 'next/link';
 
 const Page = async ({params}: {params: {slug: string}}) => {
   const eventId = params.slug;
@@ -53,10 +54,15 @@ const Page = async ({params}: {params: {slug: string}}) => {
       });
     }
     return (
-      <main className="w-full sm:w-[600px] p-4">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 uppercase">
+      <main className="w-full sm:w-[600px] flex flex-col gap-4 py-4">
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
           {eventData.eventName}
         </h2>
+        <Link
+          className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold hover:bg-primary w-fit"
+          href={eventData.kilterListLink}>
+          Kilterboard in App list
+        </Link>
         <UserEventJoinTable eventData={eventData} userId={id} gender={gender} />
       </main>
     );

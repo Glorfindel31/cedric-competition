@@ -23,6 +23,9 @@ import {
 
 import {Input} from '@/components/ui/input';
 
+import {EyeOpenIcon, EyeClosedIcon} from '@radix-ui/react-icons';
+import {Checkbox} from '@/components/ui/checkbox';
+
 import {
   Card,
   CardContent,
@@ -50,6 +53,7 @@ interface Props {}
 const Page: NextPage<Props> = ({}) => {
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
+  const [isToggledPass, setIsToggledPass] = useState(true);
 
   useEffect(() => {
     if (searchParams.has('error')) {
@@ -115,7 +119,17 @@ const Page: NextPage<Props> = ({}) => {
                       <FormLabel>Password</FormLabel>
                     )}
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <div className="flex flex-row gap-4">
+                        <Input
+                          type={isToggledPass ? 'password' : 'text'}
+                          placeholder="********"
+                          {...field}
+                        />
+                        <div className="flex flex-col justify-between items-center">
+                          {isToggledPass ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                          <Checkbox onClick={() => setIsToggledPass(!isToggledPass)} />
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

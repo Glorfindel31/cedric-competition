@@ -31,6 +31,9 @@ import {
 import {Input} from '@/components/ui/input';
 
 import * as z from 'zod';
+import {EyeOpenIcon, EyeClosedIcon} from '@radix-ui/react-icons';
+import {Checkbox} from '@/components/ui/checkbox';
+import {useState} from 'react';
 
 const formSchema = z
   .object({
@@ -63,6 +66,8 @@ const formSchema = z
 
 export default function Page({}) {
   const {toast} = useToast();
+  const [isToggledPass, setIsToggledPass] = useState(true);
+  const [isToggledCon, setIsToggledCon] = useState(true);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -160,7 +165,17 @@ export default function Page({}) {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <div className="flex flex-row gap-4">
+                        <Input
+                          type={isToggledPass ? 'password' : 'text'}
+                          placeholder="********"
+                          {...field}
+                        />
+                        <div className="flex flex-col justify-between items-center">
+                          {isToggledPass ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                          <Checkbox onClick={() => setIsToggledPass(!isToggledPass)} />
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -173,7 +188,17 @@ export default function Page({}) {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      <div className="flex flex-row gap-4">
+                        <Input
+                          type={isToggledCon ? 'password' : 'text'}
+                          placeholder="********"
+                          {...field}
+                        />
+                        <div className="flex flex-col justify-between items-center">
+                          {isToggledCon ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                          <Checkbox onClick={() => setIsToggledCon(!isToggledCon)} />
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

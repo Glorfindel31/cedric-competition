@@ -1,13 +1,22 @@
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
-import kilter from '../../public/Kilter.jpg';
+import kilter from '@/../../public/Kilter.jpg';
+import myLogo from '@/../../public/myLogo.png';
 export default function Home() {
   return (
     <main className="w-full sm:w-[600px]">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-4">
-        Kilterboard Event Maker
-      </h1>
-      <Separator className="my-4" />
+      <div className="flex flex-row items-center justify-between gap-4">
+        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-4">
+          Kilterboard Event Maker
+        </h1>
+        <Image
+          src={myLogo}
+          alt="logo of the app kem and an ice cream"
+          width={150}
+          height={150}
+        />
+      </div>
+      <Separator className="mb-4" />
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
         This is an open-source project where the admin will be able to create lists of
         problems on the Kilterboard.

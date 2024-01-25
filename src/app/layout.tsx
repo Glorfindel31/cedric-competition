@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: 'KilterBoard Event Creator',
   description:
     'This is an open-source project where the admin will be able to create lists of problems on the Kilterboard',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -28,15 +31,13 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         className={cn(
           'min-h-screen bg-background font-sans antialiased flex flex-col items-center w-full',
           lato.variable,
-        )}
-      >
+        )}>
         <AuthProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
-            disableTransitionOnChange
-          >
+            disableTransitionOnChange>
             <NavBar />
             {children}
             <Footer />
