@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
 import logo from '/public/logo.png';
+import version from '@/lib/version';
 
 export default function Footer() {
   return (
@@ -34,7 +35,8 @@ export default function Footer() {
             className="font-bold hover:underline underline-offset-4 text-primary"
             href="https://www.instagram.com/bored_on_boards/">
             Instagram
-          </Link>
+          </Link>{' '}
+          Version : {version}
         </p>
       </div>
     </footer>
