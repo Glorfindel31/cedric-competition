@@ -60,7 +60,8 @@ const Page = async ({params}: {params: {slug: string}}) => {
         </h2>
         <Link
           className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold hover:bg-primary w-fit"
-          href={eventData.kilterListLink}>
+          href={eventData.kilterListLink}
+          target="_blank">
           Kilterboard in App list
         </Link>
         <UserEventJoinTable eventData={eventData} userId={id} gender={gender} />
