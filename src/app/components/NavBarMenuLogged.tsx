@@ -12,14 +12,15 @@ interface NabBarMenuLoggedProps {
 
 export default function NavBarMenuLogged({role}: NabBarMenuLoggedProps) {
   return (
-    <div className="sm:w-[600px]">
-      <nav className="sm:w-[600px] flex flex-row-reverse">
-        <ul className="flex flex-row-reverse gap-4 py-4 w-full">
+    <div className="w-full sm:w-[800px]">
+      <nav className=" flex flex-row-reverse w-full px-4 sm:px-0 sm:w-[800px]">
+        <ul className="flex flex-row-reverse gap-1 py-4 w-full  sm:w-[800px] sm:gap-4">
           <li>
             <ToggleDark />
           </li>
           <li>
             <Button
+              size={'sm'}
               onClick={() => {
                 signOut({callbackUrl: 'http://localhost:3000/'});
               }}>
@@ -28,29 +29,29 @@ export default function NavBarMenuLogged({role}: NabBarMenuLoggedProps) {
           </li>
           {role === 'admin' ? (
             <li>
-              <Button asChild variant={'outline'}>
+              <Button asChild variant={'secondary'} size={'sm'}>
                 <Link href="/admin">Admin</Link>
               </Button>
             </li>
           ) : (
             <li>
-              <Button asChild variant={'outline'}>
-                <Link href="/user">My Account</Link>
+              <Button asChild variant={'outline'} size={'sm'}>
+                <Link href="/user">Events</Link>
               </Button>
             </li>
           )}
         </ul>
-        <ul className="flex gap-4 py-4 w-full">
+        <ul className="flex gap-1 py-4 w-full sm:gap-4">
           <li>
-            <Button asChild variant={'outline'}>
+            <Button asChild variant={'outline'} size={'sm'}>
               <Link href="/">
                 <HomeIcon />
               </Link>
             </Button>
           </li>
           <li>
-            <Button asChild variant={'outline'}>
-              <Link href="/dashboard">Dashboard</Link>
+            <Button asChild variant={'outline'} size={'sm'}>
+              <Link href="/dashboard">Ranking</Link>
             </Button>
           </li>
         </ul>

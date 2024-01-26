@@ -4,6 +4,7 @@ import {redirect} from 'next/navigation';
 import {prisma} from '@/lib/prisma';
 import UserEventJoinTable from '@/components/UserEventJoinTable';
 import Link from 'next/link';
+import Main from '@components/ui/main';
 
 const Page = async ({params}: {params: {slug: string}}) => {
   const eventId = params.slug;
@@ -54,8 +55,8 @@ const Page = async ({params}: {params: {slug: string}}) => {
       });
     }
     return (
-      <main className="w-full sm:w-[600px] flex flex-col gap-4 py-4">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+      <Main className="flex flex-col gap-4">
+        <h2 className="scroll-m-20 border-b py-2 text-3xl sm:text-4xl font-semibold tracking-tight first:mt-0">
           {eventData.eventName}
         </h2>
         <Link
@@ -65,15 +66,15 @@ const Page = async ({params}: {params: {slug: string}}) => {
           Kilterboard in App list
         </Link>
         <UserEventJoinTable eventData={eventData} userId={id} gender={gender} />
-      </main>
+      </Main>
     );
   } else {
     return (
-      <main className="w-full sm:w-[600px] p-4">
+      <Main>
         <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 uppercase">
           Not Found 404
         </h2>
-      </main>
+      </Main>
     );
   }
 };

@@ -1,11 +1,11 @@
-import {ObjectId} from 'mongodb';
 import {NextResponse, NextRequest} from 'next/server';
 import {prisma} from '@/lib/prisma';
 
 async function POST(request: any) {
   try {
-    const body = await request.json();
-    const {eventName, kilterListLink, dateRange, angle, problems} = body;
+    const {eventName, kilterListLink, dateRange, angle, problems} = await request.json();
+    if (!eventName || !kilterListLink || !dateRange || !angle || !problems)
+      return NextResponse.json({error: 'Missing required fields'}, {status: 400});
     const result = await prisma.events_list.create({
       data: {
         eventName,
@@ -29,6 +29,8 @@ async function POST(request: any) {
 async function GET(request: NextRequest) {
   try {
     const eventId = request.nextUrl.searchParams.get('eventId');
+    if (!eventId)
+      return NextResponse.json({error: 'Missing required fields'}, {status: 400});
 
     let result;
     if (eventId) {
@@ -50,11 +52,14 @@ async function GET(request: NextRequest) {
 }
 
 async function PUT(request: any) {
-  const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
+  const id = request.nextUrl.searchParams.get('id');
+  if (!id) return NextResponse.json({error: 'Missing required fields'}, {status: 400});
+
   try {
-    const body = await request.json();
-    const {eventName, kilterListLink, dateRange, angle, problems} = body;
+    const {eventName, kilterListLink, dateRange, angle, problems} = await request.json();
+    if (!eventName || !kilterListLink || !dateRange || !angle || !problems)
+      return NextResponse.json({error: 'Missing required fields'}, {status: 400});
+
     const result = await prisma.events_list.update({
       where: {
         id: id,
@@ -74,13 +79,13 @@ async function PUT(request: any) {
 }
 
 async function DELETE(request: any) {
-  const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
+  const id = request.nextUrl.searchParams.get('id');
+  if (!id) return NextResponse.json({error: 'Missing required fields'}, {status: 400});
 
   try {
     const result = await prisma.events_list.delete({
       where: {
-        id: new ObjectId(id).toString(),
+        id: id,
       },
     });
     return NextResponse.json(result, {status: 200});

@@ -1,10 +1,11 @@
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
+import Main from '@/components/ui/main';
 import kilter from '@/../../public/Kilter.jpg';
 import myLogo from '@/../../public/myLogo.png';
 export default function Home() {
   return (
-    <main className="w-full sm:w-[600px]">
+    <Main>
       <div className="flex flex-row items-center justify-between gap-4">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-4">
           Kilterboard Event Maker
@@ -41,6 +42,6 @@ export default function Home() {
       <div className="rounded overflow-hidden border">
         <Image src={kilter} alt="Kilterboard image" placeholder="blur" />
       </div>
-    </main>
+    </Main>
   );
 }

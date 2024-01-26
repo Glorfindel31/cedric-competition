@@ -12,13 +12,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
+import Main from '@/components/ui/main';
 
 export default async function page() {
   const data = await prisma.events_list.findMany();
 
   if (data) {
     return (
-      <main className="w-full sm:w-[700px] px-4">
+      <Main>
         <Tabs defaultValue="01" className="my-8">
           <TabsList>
             <TabsTrigger value="01">All Scores</TabsTrigger>
@@ -75,7 +76,7 @@ export default async function page() {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
+      </Main>
     );
   } else {
     return <div>No data</div>;

@@ -4,6 +4,7 @@ import {redirect} from 'next/navigation';
 import {prisma} from '@/lib/prisma';
 import {Separator} from '@/components/ui/separator';
 import UserEventsList from '@/components/UserEventsList';
+import Main from '@/components/ui/main';
 
 const Page = async ({}) => {
   const session = await getServerSession(options);
@@ -21,7 +22,7 @@ const Page = async ({}) => {
   }
   const event_data = await prisma.events_list.findMany();
   return (
-    <main className="w-full sm:w-[600px] p-4">
+    <Main>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
         {session.user.name}
       </h1>{' '}
@@ -30,7 +31,7 @@ const Page = async ({}) => {
       </blockquote>
       <Separator className="my-4" />
       <UserEventsList data={event_data} user={userData} />
-    </main>
+    </Main>
   );
 };
 

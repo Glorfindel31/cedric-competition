@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {Input} from '@/components/ui/input';
+import Main from '@components/ui/main';
 
 import * as z from 'zod';
 import {EyeOpenIcon, EyeClosedIcon} from '@radix-ui/react-icons';
@@ -122,7 +123,7 @@ export default function Page({}) {
   }
 
   return (
-    <main className="w-full sm:w-[600px] px-4">
+    <Main>
       <Card className="my-8">
         <CardHeader>
           <CardTitle>Register</CardTitle>
@@ -239,6 +240,6 @@ export default function Page({}) {
           </form>
         </Form>
       </Card>
-    </main>
+    </Main>
   );
 }

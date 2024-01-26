@@ -6,13 +6,13 @@ import version from '@/lib/version';
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-center w-full sm:w-[600px] my-4">
-      <Separator className="flex flex-row gap-4 items-center my-4" />
-      <div className="flex flex-row gap-4 items-center">
-        <div className="flex items-center bg-white rounded-full p-2">
-          <Image src={logo} alt="vietclimbs logo" width={100} height={100} />
+    <footer className="flex flex-col items-center justify-center w-full my-4 px-4 sm:w-[800px] sm:p-0">
+      <Separator className="mb-4" />
+      <div className="flex gap-2 items-center">
+        <div className="flex items-center bg-secondary rounded p-1">
+          <Image src={logo} alt="vietclimbs logo" width={80} height={80} />
         </div>
-        <p className="leading-5 text-sm text-muted-foreground w-full">
+        <p className="leading-4 text-xs text-muted-foreground sm:text-sm">
           Created by Cedric Florentin
           <br />
           Open-source project run on Next.js 13 and MongoDB.

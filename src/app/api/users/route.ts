@@ -6,25 +6,25 @@ const saltRounds = 10;
 
 async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const {email, password, role, username, gender} = body;
+    const {email, password, role, username, gender} = await request.json();
 
-    const existingEmail = await prisma.users_list.findUnique({
-      where: {
-        email: email,
-      },
-    });
+    if (!email || !password || !role || !username || !gender)
+      return NextResponse.json({error: 'Missing required fields'}, {status: 500});
 
-    const existingUsername = await prisma.users_list.findUnique({
-      where: {
-        username: username,
-      },
-    });
+    const [existingEmail, existingUsername] = await Promise.all([
+      prisma.users_list.findUnique({where: {email: email}}),
+      prisma.users_list.findUnique({where: {username: username}}),
+    ]);
 
-    if (existingEmail || existingUsername) {
+    if (existingEmail?.email === email || existingUsername?.username === username) {
       return NextResponse.json(
-        {error: existingEmail ? 'Email already exists' : 'Username already exists'},
-        {status: 500},
+        {
+          error:
+            existingEmail?.email === email
+              ? 'Email already exists'
+              : 'Username already exists',
+        },
+        {status: 400},
       );
     }
 

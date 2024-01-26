@@ -68,14 +68,19 @@ export default function UserEventJoinTable(props: Props) {
   };
 
   return (
-    <Table>
-      <TableCaption>Register you Accents</TableCaption>
+    <Table className="w-full text-xs sm:text-sm">
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-1/2 p-4">Problem Name</TableHead>
-          <TableHead className="w-1/6 text-center p-4">V Grade</TableHead>
-          <TableHead className="w-1/6 text-center p-4">Status</TableHead>
-          <TableHead className="w-1/6 text-center p-4">Register</TableHead>
+        <TableRow className="border-b border-primary bg-secondary text-sm ">
+          <TableHead className="w-1/2 py-4 px-2 font-extrabold">Problem Name</TableHead>
+          <TableHead className="w-1/6 text-center py-4 px-2 font-extrabold">
+            V Grade
+          </TableHead>
+          <TableHead className="w-1/6 text-center py-4 px-2 font-extrabold">
+            Status
+          </TableHead>
+          <TableHead className="w-1/6 text-center py-4 px-2 font-extrabold">
+            Register
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -84,20 +89,22 @@ export default function UserEventJoinTable(props: Props) {
           isTop ? (totalPoints += problem.grade + 1) : null;
           return (
             <TableRow key={`${eventData.id}-${index}`}>
-              <TableCell className="w-1/2 font-medium py-1">{problem.name}</TableCell>
-              <TableCell className="w-1/6 text-center py-1">V{problem.grade}</TableCell>
-              <TableCell className="w-1/6 text-center py-1">
+              <TableCell className="w-1/2 font-medium p-2">{problem.name}</TableCell>
+              <TableCell className="w-1/6 text-center p-2">V{problem.grade}</TableCell>
+              <TableCell className="w-1/6 text-center p-2">
                 {isTop ? 'Top' : 'No Top'}
               </TableCell>
-              <TableCell className="w-1/6 text-right py-1">
+              <TableCell className="w-1/6 text-right p-2">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     {isTop ? (
-                      <Button disabled variant="outline">
+                      <Button disabled variant="outline" size={'sm'}>
                         Log Ascent
                       </Button>
                     ) : (
-                      <Button variant="outline">Log Ascent</Button>
+                      <Button variant="outline" size={'sm'}>
+                        Log Ascent
+                      </Button>
                     )}
                   </AlertDialogTrigger>
                   <AlertDialogContent>
