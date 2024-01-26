@@ -44,7 +44,7 @@ export default function NavBarMenuLogged({role}: NabBarMenuLoggedProps) {
         <ul className="flex gap-1 py-4 w-full sm:gap-4">
           <li>
             <Button asChild variant={'outline'} size={'sm'}>
-              <Link href="/">
+              <Link href="/" prefetch={false}>
                 <HomeIcon />
               </Link>
             </Button>

@@ -13,7 +13,7 @@ export default function NotFound() {
       </div>
       <p className="leading-7 [&:not(:first-child)]:mt-6">It seam like you got lost...</p>
       <br />
-      <Link href="/" className="hover:underline">
+      <Link href="/" prefetch={false} className="hover:underline">
         Return Home
       </Link>
     </div>
