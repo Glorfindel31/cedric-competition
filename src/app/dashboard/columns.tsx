@@ -53,6 +53,10 @@ export const columns: ColumnDef<Ranking>[] = [
     header: 'Events joined',
   },
   {
+    accessorKey: 'problems_count',
+    header: 'Problems Topped',
+  },
+  {
     accessorKey: 'points',
     header: ({column}) => {
       return (

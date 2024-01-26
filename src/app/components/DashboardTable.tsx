@@ -58,9 +58,9 @@ const DashboardTableFullEvent: React.FC<DashboardTableProps> = ({data, categorie
     return (
       <div className="mx-auto p-8">
         <Badge className="text-sm">#Male</Badge>
-        <DataTable columns={columns} data={maleRankingData} />
+        <DataTable columns={columns} data={maleRankingData} key={'male'} />
         <Badge className="text-sm">#Female</Badge>
-        <DataTable columns={columns} data={femaleRankingData} />
+        <DataTable columns={columns} data={femaleRankingData} key={'female'} />
       </div>
     );
   } else {
@@ -79,12 +79,12 @@ const DashboardTablePerEvent: React.FC<DashboardTableProps> = ({data, categories
       const rankingData = [...maleRankingData, ...femaleRankingData];
 
       return (
-        <>
+        <div key={event.id}>
           <h2 className="my-8 scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight transition-colors first:mt-0 capitalize">
             {event.eventName}
           </h2>
           <DataTable columns={columns} data={rankingData} key={event.id} />
-        </>
+        </div>
       );
     });
     return <div className="container mx-auto py-10">{tables}</div>;
@@ -96,7 +96,7 @@ const DashboardTablePerEvent: React.FC<DashboardTableProps> = ({data, categories
       const femaleRankingData = getRankingData(femaleParticipants, 'Female');
 
       return (
-        <>
+        <div key={event.id}>
           <h2 className="my-8 scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight transition-colors first:mt-0 capitalize">
             {event.eventName}
           </h2>
@@ -108,7 +108,7 @@ const DashboardTablePerEvent: React.FC<DashboardTableProps> = ({data, categories
             data={femaleRankingData}
             key={event.id + 'Female'}
           />
-        </>
+        </div>
       );
     });
 
