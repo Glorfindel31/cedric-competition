@@ -69,14 +69,33 @@ const Page: NextPage<Props> = ({}) => {
     },
   });
 
+  async function getUserByUsername(username: string) {
+    const url = `/api/users?user=${username}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) {
+      throw new Error('Something went wrong');
+    }
+    return res.json();
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await signIn('credentials', {
       username: values.username.toString(),
       password: values.password.toString(),
-      redirect: true,
-      callbackUrl: '/',
+      redirect: false,
     });
-    // form.reset();
+    const user: any = await getUserByUsername(values.username.toString());
+    if (!user) return setError('User not found');
+    if (user.role === 'admin') {
+      window.location.href = '/admin';
+    } else {
+      window.location.href = '/user';
+    }
   }
 
   return (

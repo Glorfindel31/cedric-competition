@@ -54,4 +54,28 @@ async function POST(request: NextRequest) {
   }
 }
 
-export {POST};
+async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const username = searchParams.get('user');
+
+  if (!username) {
+    return NextResponse.json(
+      {error: 'Missing required `user` query parameter'},
+      {status: 400},
+    );
+  }
+
+  try {
+    const user = await prisma.users_list.findFirst({where: {username: username}});
+
+    if (!user) {
+      return NextResponse.json({error: 'User not found'}, {status: 404});
+    }
+
+    return NextResponse.json(user);
+  } catch (error) {
+    return NextResponse.json({error: error}, {status: 500});
+  }
+}
+
+export {POST, GET};
