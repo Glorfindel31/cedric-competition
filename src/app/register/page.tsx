@@ -35,6 +35,7 @@ import * as z from 'zod';
 import {EyeOpenIcon, EyeClosedIcon} from '@radix-ui/react-icons';
 import {Checkbox} from '@/components/ui/checkbox';
 import {useState} from 'react';
+import {signIn} from 'next-auth/react';
 
 const formSchema = z
   .object({
@@ -108,10 +109,12 @@ export default function Page({}) {
             'Registered at: ' +
             getNewDate(),
         });
-        form.reset();
-        setTimeout(() => {
-          window.location.href = '/signIn';
-        }, 2000);
+        await signIn('credentials', {
+          username: values.username.toString(),
+          password: values.password.toString(),
+          redirect: true,
+          callbackUrl: '/user',
+        });
       }
     } catch (error) {
       console.error('Error during registration', error);

@@ -3,8 +3,7 @@ import {prisma} from '@/lib/prisma';
 
 async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const {problemName, userId, eventId, grade, gender} = body;
+    const {problemName, userId, eventId, grade, gender} = await request.json();
 
     // Fetch the event
     let event = await prisma.events_list.findUnique({
